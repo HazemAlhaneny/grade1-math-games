@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="موقع تعليمي للصف الأول - الأعداد من ١ إلى ٩ - إعداد المعلم جميل سكاكية - مدرسة غازي القواسمة" />
+  <title>ألعابي مع الأعداد | الصف الأول</title>
+  <style>
+    :root{
+      --ink:#24324a; --muted:#65738b; --paper:#fffdf8; --bg:#eef7ff;
+      --primary:#4f7cff; --primary2:#7b5cff; --green:#27ae72; --orange:#ff9f43;
+      --pink:#ff6b9d; --red:#e85d75; --shadow:0 14px 35px rgba(36,50,74,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Tahoma","Arial",sans-serif;color:var(--ink);background:
+      radial-gradient(circle at 10% 10%,#fff 0 8%,transparent 9%),
+      linear-gradient(135deg,#eef7ff,#fff5fb 55%,#f7fff5);min-height:100vh}
+    header{padding:28px 18px 18px;text-align:center}
+    .school{display:inline-block;background:#fff;border-radius:999px;padding:8px 18px;font-weight:700;color:var(--primary);box-shadow:0 6px 20px rgba(79,124,255,.12)}
+    h1{font-size:clamp(30px,6vw,54px);margin:16px 0 8px;line-height:1.1}
+    .subtitle{margin:0 auto;color:var(--muted);font-size:18px;max-width:760px;line-height:1.8}
+    .teacher{margin-top:10px;font-weight:700;color:var(--purple,#6b55d9)}
+    main{max-width:1050px;margin:auto;padding:18px}
+    .numbers{background:rgba(255,255,255,.78);backdrop-filter:blur(8px);border:2px solid #fff;border-radius:28px;padding:22px;box-shadow:var(--shadow)}
+    .section-title{text-align:center;margin:0 0 16px;font-size:24px}
+    .number-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:10px}
+    .num{border:0;border-radius:18px;background:#fff;box-shadow:0 7px 16px rgba(36,50,74,.09);font-size:30px;font-weight:900;color:var(--primary);padding:14px 6px;cursor:pointer;transition:.18s}
+    .num:hover,.num.active{transform:translateY(-4px) scale(1.03);background:linear-gradient(145deg,#4f7cff,#7b5cff);color:#fff}
+    .games{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
+    .game{background:#fff;border-radius:28px;padding:24px;box-shadow:var(--shadow);border:2px solid #fff}
+    .game h2{margin:0 0 8px;font-size:25px}
+    .game p{color:var(--muted);margin:0 0 18px;line-height:1.7}
+    .badge{display:inline-block;padding:6px 10px;border-radius:10px;background:#edf2ff;color:var(--primary);font-weight:800;font-size:13px;margin-bottom:10px}
+    .question{font-size:44px;text-align:center;font-weight:900;margin:18px 0}
+    .answers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .answer,.action{border:0;border-radius:16px;padding:14px;font-size:22px;font-weight:900;cursor:pointer;background:#f0f5ff;color:var(--ink);transition:.18s}
+    .answer:hover,.action:hover{transform:translateY(-2px)}
+    .answer.correct{background:#dff8eb;color:#168451}
+    .answer.wrong{background:#ffe2e7;color:#b8324b}
+    .feedback{min-height:34px;text-align:center;font-weight:800;margin-top:12px}
+    .score{text-align:center;color:var(--muted);font-weight:700}
+    .order-area{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+    .order-btn{border:0;border-radius:18px;background:#fff4e5;box-shadow:0 5px 12px rgba(255,159,67,.12);padding:18px;font-size:32px;font-weight:900;color:#d87913;cursor:pointer}
+    .order-btn.selected{outline:4px solid #ffd28f;transform:scale(1.03)}
+    .small-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .action{background:linear-gradient(145deg,#ff9f43,#ff7a59);color:#fff;font-size:17px;padding:11px 18px}
+    .hint{background:#f7f8fc;padding:12px 15px;border-radius:14px;color:var(--muted);font-size:14px}
+    footer{text-align:center;padding:25px 15px 35px;color:var(--muted);font-size:14px}
+    .celebrate{animation:pop .45s ease}
+    @keyframes pop{50%{transform:scale(1.06)}}
+    @media(max-width:720px){
+      .number-grid{grid-template-columns:repeat(5,1fr)}
+      .games{grid-template-columns:1fr}
+      .game{padding:20px}
+    }
+    @media(max-width:420px){.number-grid{grid-template-columns:repeat(3,1fr)}.question{font-size:38px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="school">مدرسة غازي القواسمة</div>
+  <h1>🌟 ألعابي مع الأعداد 🌟</h1>
+  <p class="subtitle">مغامرة ممتعة لطلاب الصف الأول للتعرّف إلى الأعداد من ١ إلى ٩ والتدرّب على الجمع والطرح ضمن العدد ٥.</p>
+  <div class="teacher">إعداد المعلم: جميل سكاكية</div>
+</header>
+
+<main>
+  <section class="numbers">
+    <h2 class="section-title">🔢 تعرّف إلى الأعداد من ١ إلى ٩</h2>
+    <div class="number-grid" id="numberGrid"></div>
+    <div class="hint" id="numberHint">اضغط على أي عدد لتسمعه وتشاهده بشكل أكبر.</div>
+  </section>
+
+  <section class="games">
+    <article class="game">
+      <span class="badge">اللعبة الأولى 🎯</span>
+      <h2>🧮 جمع وطرح ضمن العدد ٥</h2>
+      <p>اقرأ المسألة ثم اختر الإجابة الصحيحة. كل إجابة صحيحة تمنحك نجمة!</p>
+      <div class="question" id="mathQuestion">٢ + ١ = ؟</div>
+      <div class="answers" id="answers"></div>
+      <div class="feedback" id="mathFeedback"></div>
+      <div class="score">⭐ النجوم: <span id="score">٠</span></div>
+      <div class="small-actions" style="margin-top:12px">
+        <button class="action" id="newMath">مسألة جديدة</button>
+      </div>
+    </article>
+
+    <article class="game">
+      <span class="badge" style="background:#fff3e2;color:#d87913">اللعبة الثانية 🏆</span>
+      <h2>🐾 رتّب الأعداد</h2>
+      <p>اضغط الأعداد من الأصغر إلى الأكبر، ثم اضغط «تحقق».</p>
+      <div class="order-area" id="orderArea"></div>
+      <div class="small-actions">
+        <button class="action" id="checkOrder">تحقق من الترتيب</button>
+        <button class="action" id="newOrder" style="background:linear-gradient(145deg,#7b5cff,#4f7cff)">تحدٍّ جديد</button>
+      </div>
+      <div class="feedback" id="orderFeedback"></div>
+    </article>
+  </section>
+</main>
+
+<footer>© الصف الأول — مدرسة غازي القواسمة — إعداد المعلم جميل سكاكية</footer>
+
+<script>
+  const nums = ['١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  const western = [1,2,3,4,5,6,7,8,9];
+  const toArabic = n => String(n).replace(/\d/g, d => nums[Number(d)-1]);
+
+  // الأعداد
+  const grid = document.getElementById('numberGrid');
+  const hint = document.getElementById('numberHint');
+  nums.forEach((n,i)=>{
+    const b=document.createElement('button');
+    b.className='num'; b.textContent=n; b.setAttribute('aria-label','العدد '+n);
+    b.onclick=()=>{
+      document.querySelectorAll('.num').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      hint.textContent = `العدد ${n} — أحسنت! 👏`;
+      if ('speechSynthesis' in window) {
+        speechSynthesis.cancel();
+        const u=new SpeechSynthesisUtterance(`العدد ${n}`);
+        u.lang='ar-SA'; u.rate=.8;
+        speechSynthesis.speak(u);
+      }
+    };
+    grid.appendChild(b);
+  });
+
+  // لعبة الرياضيات: جمع وطرح ضمن 5
+  let score=0, currentAnswer=0;
+  const qEl=document.getElementById('mathQuestion');
+  const aEl=document.getElementById('answers');
+  const fEl=document.getElementById('mathFeedback');
+  const scoreEl=document.getElementById('score');
+
+  function newMath(){
+    let x=Math.floor(Math.random()*6), y=Math.floor(Math.random()*6), op;
+    if(Math.random()<.5){
+      op='+';
+      while(x+y>5){ x=Math.floor(Math.random()*6); y=Math.floor(Math.random()*6); }
+      currentAnswer=x+y;
+    }else{
+      op='−';
+      if(x<y)[x,y]=[y,x];
+      currentAnswer=x-y;
+    }
+    qEl.textContent=`${toArabic(x)} ${op} ${toArabic(y)} = ؟`;
+    const choices=new Set([currentAnswer]);
+    while(choices.size<3){
+      let v=Math.floor(Math.random()*6);
+      if(v!==currentAnswer) choices.add(v);
+    }
+    aEl.innerHTML='';
+    [...choices].sort(()=>Math.random()-.5).forEach(v=>{
+      const b=document.createElement('button');
+      b.className='answer'; b.textContent=toArabic(v);
+      b.onclick=()=>{
+        document.querySelectorAll('.answer').forEach(x=>x.disabled=true);
+        if(v===currentAnswer){
+          b.classList.add('correct'); score++; scoreEl.textContent=toArabic(score);
+          fEl.textContent='🎉 إجابة صحيحة! رائع!';
+          fEl.style.color='#168451';
+        }else{
+          b.classList.add('wrong');
+          fEl.textContent=`💡 حاول مرة أخرى. الإجابة هي ${toArabic(currentAnswer)}`;
+          fEl.style.color='#b8324b';
+          [...document.querySelectorAll('.answer')].find(x=>x.textContent===toArabic(currentAnswer))?.classList.add('correct');
+        }
+      };
+      aEl.appendChild(b);
+    });
+    fEl.textContent='';
+  }
+  document.getElementById('newMath').onclick=newMath;
+  newMath();
+
+  // لعبة ترتيب الأعداد
+  let order=[];
+  const orderArea=document.getElementById('orderArea');
+  const orderFeedback=document.getElementById('orderFeedback');
+  function newOrder(){
+    order=[...western].sort(()=>Math.random()-.5).slice(0,3);
+    renderOrder();
+    orderFeedback.textContent='';
+  }
+  function renderOrder(){
+    orderArea.innerHTML='';
+    order.forEach((v,i)=>{
+      const b=document.createElement('button');
+      b.className='order-btn'; b.textContent=toArabic(v);
+      b.onclick=()=>{
+        if(i===0 && b.classList.contains('selected')){
+          b.classList.remove('selected');
+        }else{
+          document.querySelectorAll('.order-btn').forEach(x=>x.classList.remove('selected'));
+          b.classList.add('selected');
+        }
+      };
+      orderArea.appendChild(b);
+    });
+  }
+  document.getElementById('checkOrder').onclick=()=>{
+    const correct=[...order].sort((a,b)=>a-b);
+    const ok=order.every((v,i)=>v===correct[i]);
+    if(ok){
+      orderFeedback.textContent='🏆 ممتاز! رتّبت الأعداد بشكل صحيح!';
+      orderFeedback.style.color='#168451';
+      orderArea.classList.add('celebrate');
+      setTimeout(()=>orderArea.classList.remove('celebrate'),500);
+    }else{
+      orderFeedback.textContent=`🌱 ليس بعد! تذكّر: ابدأ من العدد الأصغر.`;
+      orderFeedback.style.color='#b8324b';
+    }
+  };
+  document.getElementById('newOrder').onclick=newOrder;
+  newOrder();
+</script>
+</body>
+</html>
