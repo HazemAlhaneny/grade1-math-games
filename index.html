@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#4f46e5">
+
 <title>ألعاب الصف الأول التعليمية</title>
 
 <style>
@@ -220,6 +221,7 @@ button {
     opacity: 0;
     transform: translateY(15px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -451,6 +453,7 @@ button {
 }
 
 @media(max-width:600px) {
+
   .student-card {
     flex-direction: column;
   }
@@ -466,6 +469,7 @@ button {
   .screen {
     padding: 16px;
   }
+
 }
 </style>
 </head>
@@ -473,17 +477,24 @@ button {
 <body>
 
 <header class="top">
-  <div class="decorations">⭐ 🔢 📖 🤝 🕌</div>
 
-  <h1>🌟 ألعاب الصف الأول التعليمية 🌟</h1>
+  <div class="decorations">
+    ⭐ 🔢 📖 🤝 🕌
+  </div>
+
+  <h1>
+    🌟 ألعاب الصف الأول التعليمية 🌟
+  </h1>
 
   <p>
     نتعلم ونلعب ونكتشف معًا
   </p>
+
 </header>
 
 
 <div class="student-box">
+
   <div class="student-card">
 
     <label for="studentName">
@@ -503,6 +514,7 @@ button {
     </div>
 
   </div>
+
 </div>
 
 
@@ -525,13 +537,15 @@ button {
 
   <div class="categories">
 
-    <!-- الرياضيات -->
-
     <div class="category">
 
-      <div class="category-icon">🧮</div>
+      <div class="category-icon">
+        🧮
+      </div>
 
-      <h3>الرياضيات</h3>
+      <h3>
+        الرياضيات
+      </h3>
 
       <p>
         الأعداد من ١ إلى ٩،
@@ -548,13 +562,15 @@ button {
     </div>
 
 
-    <!-- اللغة العربية -->
-
     <div class="category">
 
-      <div class="category-icon">📖</div>
+      <div class="category-icon">
+        📖
+      </div>
 
-      <h3>اللغة العربية</h3>
+      <h3>
+        اللغة العربية
+      </h3>
 
       <p>
         نتعلم أسماء الأعداد
@@ -571,13 +587,15 @@ button {
     </div>
 
 
-    <!-- المواطنة -->
-
     <div class="category">
 
-      <div class="category-icon">🤝</div>
+      <div class="category-icon">
+        🤝
+      </div>
 
-      <h3>المواطنة الصالحة</h3>
+      <h3>
+        المواطنة الصالحة
+      </h3>
 
       <p>
         نتعلم النظافة والتعاون
@@ -594,13 +612,15 @@ button {
     </div>
 
 
-    <!-- التربية الإسلامية -->
-
     <div class="category">
 
-      <div class="category-icon">🕌</div>
+      <div class="category-icon">
+        🕌
+      </div>
 
-      <h3>التربية الإسلامية</h3>
+      <h3>
+        التربية الإسلامية
+      </h3>
 
       <p>
         نتعلم القيم والآداب
@@ -805,29 +825,86 @@ button {
 
 <script>
 
-/* ================================
-   الأرقام العربية
-================================ */
+/* =====================================================
+   تحويل جميع الأرقام إلى الأرقام العربية الهندية
+   ٠ ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
+===================================================== */
 
 const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
+
 
 function ar(number) {
 
   return String(number).replace(
     /[0-9]/g,
     function(digit) {
+
       return arabicDigits[
         Number(digit)
       ];
+
     }
   );
 
 }
 
 
-/* ================================
-   بيانات الألعاب
-================================ */
+/* =====================================================
+   توحيد الرقم عند المقارنة
+   حتى تعتبر ٦ و 6 نفس الإجابة
+===================================================== */
+
+function normalizeArabicNumber(value) {
+
+  return String(value)
+    .replace(
+      /[٠-٩]/g,
+      function(digit) {
+
+        return arabicDigits.indexOf(
+          digit
+        );
+
+      }
+    )
+    .replace(
+      /[۰-۹]/g,
+      function(digit) {
+
+        return "۰۱۲۳۴۵۶۷۸۹".indexOf(
+          digit
+        );
+
+      }
+    )
+    .trim();
+
+}
+
+
+/* =====================================================
+   عرض الرقم دائمًا بالأرقام العربية
+===================================================== */
+
+function displayNumber(value) {
+
+  return String(value).replace(
+    /[0-9]/g,
+    function(digit) {
+
+      return arabicDigits[
+        Number(digit)
+      ];
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   متغيرات اللعبة
+===================================================== */
 
 let currentCategory = "";
 
@@ -846,9 +923,9 @@ let correctText = "";
 let answered = false;
 
 
-/* ================================
-   النجوم واسم الطالب
-================================ */
+/* =====================================================
+   اسم الطالب والنجوم
+===================================================== */
 
 let stars =
   Number(
@@ -870,9 +947,11 @@ const savedName =
   );
 
 
-if (savedName) {
+if(savedName) {
+
   studentName.value =
     savedName;
+
 }
 
 
@@ -897,7 +976,7 @@ function updateStars() {
   document.getElementById(
     "stars"
   ).textContent =
-    ar(stars);
+    displayNumber(stars);
 
 }
 
@@ -927,9 +1006,9 @@ function getName() {
 }
 
 
-/* ================================
-   عرض الألعاب
-================================ */
+/* =====================================================
+   عرض الأقسام
+===================================================== */
 
 function showGames(category) {
 
@@ -956,68 +1035,127 @@ function showGames(category) {
   let buttons = "";
 
 
-  if (category === "math") {
+  if(category === "math") {
 
     buttons = `
 
       <div class="category">
-        <div class="category-icon">➕</div>
-        <h3>الجمع ضمن ٥</h3>
-        <p>اجمع عددين واختر الإجابة الصحيحة.</p>
+
+        <div class="category-icon">
+          ➕
+        </div>
+
+        <h3>
+          الجمع ضمن ٥
+        </h3>
+
+        <p>
+          اجمع عددين واختر الإجابة الصحيحة.
+        </p>
+
         <button
           class="main-button"
           onclick="startGame('add')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
+
       <div class="category">
-        <div class="category-icon">➖</div>
-        <h3>الطرح ضمن ٥</h3>
-        <p>اطرح عددين ضمن العدد ٥.</p>
+
+        <div class="category-icon">
+          ➖
+        </div>
+
+        <h3>
+          الطرح ضمن ٥
+        </h3>
+
+        <p>
+          اطرح عددين ضمن العدد ٥.
+        </p>
+
         <button
           class="main-button"
           onclick="startGame('sub')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
+
       <div class="category">
-        <div class="category-icon">🍎</div>
-        <h3>عد الأشياء</h3>
-        <p>عد الأشياء واختر العدد من ١ إلى ٩.</p>
+
+        <div class="category-icon">
+          🍎
+        </div>
+
+        <h3>
+          عد الأشياء
+        </h3>
+
+        <p>
+          عد الأشياء واختر العدد من ١ إلى ٩.
+        </p>
+
         <button
           class="main-button"
           onclick="startGame('count')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
+
       <div class="category">
-        <div class="category-icon">🔢</div>
-        <h3>الأعداد ١ إلى ٩</h3>
-        <p>تعرف على الأعداد واختر العدد الصحيح.</p>
+
+        <div class="category-icon">
+          🔢
+        </div>
+
+        <h3>
+          الأعداد ١ إلى ٩
+        </h3>
+
+        <p>
+          تعرف على الأعداد واختر العدد الصحيح.
+        </p>
+
         <button
           class="main-button"
           onclick="startGame('numbers')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
+
       <div class="category">
-        <div class="category-icon">⚖️</div>
-        <h3>أكبر أم أصغر؟</h3>
-        <p>قارن بين عددين من ١ إلى ٩.</p>
+
+        <div class="category-icon">
+          ⚖️
+        </div>
+
+        <h3>
+          أكبر أم أصغر؟
+        </h3>
+
+        <p>
+          قارن بين عددين من ١ إلى ٩.
+        </p>
+
         <button
           class="main-button"
           onclick="startGame('compare')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
     `;
@@ -1025,44 +1163,79 @@ function showGames(category) {
   }
 
 
-  if (category === "arabic") {
+  if(category === "arabic") {
 
     buttons = `
 
       <div class="category">
-        <div class="category-icon">🔤</div>
-        <h3>اسم العدد</h3>
-        <p>اربط الرقم باسمه باللغة العربية.</p>
+
+        <div class="category-icon">
+          🔤
+        </div>
+
+        <h3>
+          اسم العدد
+        </h3>
+
+        <p>
+          اربط الرقم باسمه باللغة العربية.
+        </p>
+
         <button
           class="main-button blue-button"
           onclick="startGame('arabicNumber')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
+
       <div class="category">
-        <div class="category-icon">🔊</div>
-        <h3>استمع واختر</h3>
-        <p>استمع إلى اسم العدد واختر الرقم.</p>
+
+        <div class="category-icon">
+          🔊
+        </div>
+
+        <h3>
+          استمع واختر
+        </h3>
+
+        <p>
+          استمع إلى اسم العدد واختر الرقم.
+        </p>
+
         <button
           class="main-button blue-button"
           onclick="startGame('listenNumber')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
+
       <div class="category">
-        <div class="category-icon">📝</div>
-        <h3>الكلمة والرقم</h3>
-        <p>اختر الرقم الذي يناسب الكلمة.</p>
+
+        <div class="category-icon">
+          📝
+        </div>
+
+        <h3>
+          الكلمة والرقم
+        </h3>
+
+        <p>
+          اختر الرقم الذي يناسب الكلمة.
+        </p>
+
         <button
           class="main-button blue-button"
           onclick="startGame('wordNumber')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
     `;
@@ -1070,44 +1243,79 @@ function showGames(category) {
   }
 
 
-  if (category === "citizenship") {
+  if(category === "citizenship") {
 
     buttons = `
 
       <div class="category">
-        <div class="category-icon">🏫</div>
-        <h3>مدرستي جميلة</h3>
-        <p>نتعلم المحافظة على المدرسة ونظافتها.</p>
+
+        <div class="category-icon">
+          🏫
+        </div>
+
+        <h3>
+          مدرستي جميلة
+        </h3>
+
+        <p>
+          نتعلم المحافظة على المدرسة ونظافتها.
+        </p>
+
         <button
           class="main-button green-button"
           onclick="startGame('school')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
+
       <div class="category">
-        <div class="category-icon">🤝</div>
-        <h3>أتعاون مع الآخرين</h3>
-        <p>نتعلم المساعدة والاحترام والتعاون.</p>
+
+        <div class="category-icon">
+          🤝
+        </div>
+
+        <h3>
+          أتعاون مع الآخرين
+        </h3>
+
+        <p>
+          نتعلم المساعدة والاحترام والتعاون.
+        </p>
+
         <button
           class="main-button green-button"
           onclick="startGame('cooperation')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
+
       <div class="category">
-        <div class="category-icon">🌳</div>
-        <h3>أحافظ على بيئتي</h3>
-        <p>نتعلم المحافظة على البيئة والنظافة.</p>
+
+        <div class="category-icon">
+          🌳
+        </div>
+
+        <h3>
+          أحافظ على بيئتي
+        </h3>
+
+        <p>
+          نتعلم المحافظة على البيئة والنظافة.
+        </p>
+
         <button
           class="main-button green-button"
           onclick="startGame('environment')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
     `;
@@ -1115,44 +1323,79 @@ function showGames(category) {
   }
 
 
-  if (category === "islamic") {
+  if(category === "islamic") {
 
     buttons = `
 
       <div class="category">
-        <div class="category-icon">❤️</div>
-        <h3>بر الوالدين</h3>
-        <p>نتعلم احترام الوالدين ومساعدتهما.</p>
+
+        <div class="category-icon">
+          ❤️
+        </div>
+
+        <h3>
+          بر الوالدين
+        </h3>
+
+        <p>
+          نتعلم احترام الوالدين ومساعدتهما.
+        </p>
+
         <button
           class="main-button orange-button"
           onclick="startGame('parents')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
+
       <div class="category">
-        <div class="category-icon">🤲</div>
-        <h3>السلوك الحسن</h3>
-        <p>نتعلم الصدق والأمانة ومساعدة الآخرين.</p>
+
+        <div class="category-icon">
+          🤲
+        </div>
+
+        <h3>
+          السلوك الحسن
+        </h3>
+
+        <p>
+          نتعلم الصدق والأمانة ومساعدة الآخرين.
+        </p>
+
         <button
           class="main-button orange-button"
           onclick="startGame('goodBehavior')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
+
       <div class="category">
-        <div class="category-icon">🧼</div>
-        <h3>النظافة</h3>
-        <p>نتعلم أهمية النظافة والعناية بأنفسنا.</p>
+
+        <div class="category-icon">
+          🧼
+        </div>
+
+        <h3>
+          النظافة
+        </h3>
+
+        <p>
+          نتعلم أهمية النظافة والعناية بأنفسنا.
+        </p>
+
         <button
           class="main-button orange-button"
           onclick="startGame('cleanliness')"
         >
           🎮 ابدأ
         </button>
+
       </div>
 
     `;
@@ -1166,7 +1409,9 @@ function showGames(category) {
 
     <div class="welcome">
 
-      <h2>${titles[category]}</h2>
+      <h2>
+        ${titles[category]}
+      </h2>
 
       <p>
         اختر اللعبة التي تريدها
@@ -1203,9 +1448,9 @@ function restoreMenu() {
 }
 
 
-/* ================================
+/* =====================================================
    بدء اللعبة
-================================ */
+===================================================== */
 
 function startGame(type) {
 
@@ -1216,6 +1461,7 @@ function startGame(type) {
   score = 0;
 
   answered = false;
+
 
   document.getElementById(
     "menu"
@@ -1301,9 +1547,9 @@ function startGame(type) {
 }
 
 
-/* ================================
-   أدوات عامة
-================================ */
+/* =====================================================
+   أدوات عشوائية
+===================================================== */
 
 function random(min,max) {
 
@@ -1319,7 +1565,7 @@ function shuffle(array) {
 
   const copy = [...array];
 
-  for (
+  for(
     let i=copy.length-1;
     i>0;
     i--
@@ -1327,7 +1573,8 @@ function shuffle(array) {
 
     const j =
       Math.floor(
-        Math.random()*(i+1)
+        Math.random() *
+        (i+1)
       );
 
     [
@@ -1346,6 +1593,10 @@ function shuffle(array) {
 }
 
 
+/* =====================================================
+   خيارات الإجابات
+===================================================== */
+
 function createOptions(
   correct,
   min,
@@ -1357,14 +1608,15 @@ function createOptions(
   ];
 
 
-  while (
+  while(
     options.length < 4
   ) {
 
     const value =
       random(min,max);
 
-    if (
+
+    if(
       !options.includes(value)
     ) {
 
@@ -1387,13 +1639,28 @@ function answerButtons(
   return options.map(
     function(value) {
 
+      /*
+        القيمة الحقيقية تبقى رقمًا أو نصًا صحيحًا
+        داخل data-answer.
+        أما الذي يراه الطالب فهو عربي هندِي.
+      */
+
+      const display =
+        typeof value === "number"
+          ? displayNumber(value)
+          : value;
+
+
       return `
+
         <button
           class="answer"
-          onclick="checkAnswer('${value}')"
+          data-answer="${escapeHTML(String(value))}"
+          onclick="checkAnswer(this)"
         >
-          ${value}
+          ${display}
         </button>
+
       `;
 
     }
@@ -1402,13 +1669,29 @@ function answerButtons(
 }
 
 
-/* ================================
+/* =====================================================
+   حماية بسيطة للنصوص
+===================================================== */
+
+function escapeHTML(text) {
+
+  return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
    السؤال التالي
-================================ */
+===================================================== */
 
 function nextQuestion() {
 
-  if (
+  if(
     question >=
     totalQuestions
   ) {
@@ -1422,23 +1705,25 @@ function nextQuestion() {
 
   question++;
 
-  answered = false;
+  answered=false;
 
-  correctAnswer = null;
+  correctAnswer=null;
 
-  correctText = "";
+  correctText="";
 
 
   document.getElementById(
     "questionNumber"
   ).textContent =
-    ar(question);
+    displayNumber(question);
 
 
   document.getElementById(
     "questionTotal"
   ).textContent =
-    ar(totalQuestions);
+    displayNumber(
+      totalQuestions
+    );
 
 
   document.getElementById(
@@ -1527,19 +1812,24 @@ function nextQuestion() {
 }
 
 
-/* ================================
-   الرياضيات
-================================ */
+/* =====================================================
+   الجمع ضمن ٥
+===================================================== */
 
 function additionQuestion() {
 
-  const a=random(0,5);
+  const a =
+    random(0,5);
 
-  const b=random(0,5-a);
+  const b =
+    random(0,5-a);
 
-  correctAnswer=a+b;
 
-  const options=
+  correctAnswer =
+    a+b;
+
+
+  const options =
     createOptions(
       correctAnswer,
       0,
@@ -1549,7 +1839,7 @@ function additionQuestion() {
 
   document.getElementById(
     "gameContent"
-  ).innerHTML=`
+  ).innerHTML = `
 
     <div class="question-box">
 
@@ -1565,13 +1855,15 @@ function additionQuestion() {
       </button>
 
       <div class="question">
-        ${ar(a)} + ${ar(b)} = ؟
+        ${displayNumber(a)}
+        +
+        ${displayNumber(b)}
+        =
+        ؟
       </div>
 
       <div class="answers">
-        ${answerButtons(
-          options.map(ar)
-        )}
+        ${answerButtons(options)}
       </div>
 
     </div>
@@ -1581,15 +1873,24 @@ function additionQuestion() {
 }
 
 
+/* =====================================================
+   الطرح ضمن ٥
+===================================================== */
+
 function subtractionQuestion() {
 
-  const a=random(0,5);
+  const a =
+    random(0,5);
 
-  const b=random(0,a);
+  const b =
+    random(0,a);
 
-  correctAnswer=a-b;
 
-  const options=
+  correctAnswer =
+    a-b;
+
+
+  const options =
     createOptions(
       correctAnswer,
       0,
@@ -1599,7 +1900,7 @@ function subtractionQuestion() {
 
   document.getElementById(
     "gameContent"
-  ).innerHTML=`
+  ).innerHTML = `
 
     <div class="question-box">
 
@@ -1615,13 +1916,15 @@ function subtractionQuestion() {
       </button>
 
       <div class="question">
-        ${ar(a)} − ${ar(b)} = ؟
+        ${displayNumber(a)}
+        −
+        ${displayNumber(b)}
+        =
+        ؟
       </div>
 
       <div class="answers">
-        ${answerButtons(
-          options.map(ar)
-        )}
+        ${answerButtons(options)}
       </div>
 
     </div>
@@ -1631,23 +1934,38 @@ function subtractionQuestion() {
 }
 
 
+/* =====================================================
+   عد الأشياء
+===================================================== */
+
 function countingQuestion() {
 
-  const amount=random(1,9);
+  const amount =
+    random(1,9);
 
-  correctAnswer=amount;
 
-  const fruits=[
-    "🍎","🍊","🍓","🍌"
+  correctAnswer =
+    amount;
+
+
+  const fruits = [
+    "🍎",
+    "🍊",
+    "🍓",
+    "🍌"
   ];
 
-  const fruit=
+
+  const fruit =
     fruits[
-      random(0,fruits.length-1)
+      random(
+        0,
+        fruits.length-1
+      )
     ];
 
 
-  let items="";
+  let items = "";
 
 
   for(
@@ -1656,23 +1974,23 @@ function countingQuestion() {
     i++
   ) {
 
-    items+=
+    items +=
       `<span>${fruit}</span>`;
 
   }
 
 
-  const options=
+  const options =
     createOptions(
       amount,
       1,
       9
-    ).map(ar);
+    );
 
 
   document.getElementById(
     "gameContent"
-  ).innerHTML=`
+  ).innerHTML = `
 
     <div class="question-box">
 
@@ -1695,23 +2013,31 @@ function countingQuestion() {
 }
 
 
+/* =====================================================
+   الأعداد من ١ إلى ٩
+===================================================== */
+
 function numberQuestion() {
 
-  const number=random(1,9);
+  const number =
+    random(1,9);
 
-  correctAnswer=number;
 
-  const options=
+  correctAnswer =
+    number;
+
+
+  const options =
     createOptions(
       number,
       1,
       9
-    ).map(ar);
+    );
 
 
   document.getElementById(
     "gameContent"
-  ).innerHTML=`
+  ).innerHTML = `
 
     <div class="question-box">
 
@@ -1720,7 +2046,7 @@ function numberQuestion() {
       </div>
 
       <div class="question">
-        ${ar(number)}
+        ${displayNumber(number)}
       </div>
 
       <div class="answers">
@@ -1734,29 +2060,36 @@ function numberQuestion() {
 }
 
 
+/* =====================================================
+   المقارنة
+===================================================== */
+
 function comparisonQuestion() {
 
-  let a=random(1,9);
+  let a =
+    random(1,9);
 
-  let b=random(1,9);
+  let b =
+    random(1,9);
 
 
   while(a===b) {
-    b=random(1,9);
+
+    b =
+      random(1,9);
+
   }
 
 
   correctAnswer =
-    a>b ? ">" : "<";
-
-
-  correctText =
-    correctAnswer;
+    a>b
+      ? ">"
+      : "<";
 
 
   document.getElementById(
     "gameContent"
-  ).innerHTML=`
+  ).innerHTML = `
 
     <div class="question-box">
 
@@ -1765,28 +2098,33 @@ function comparisonQuestion() {
       </div>
 
       <div class="question">
-        ${ar(a)} ؟ ${ar(b)}
+        ${displayNumber(a)}
+        ؟
+        ${displayNumber(b)}
       </div>
 
       <div class="answers">
 
         <button
           class="answer"
-          onclick="checkAnswer('>')"
+          data-answer=">"
+          onclick="checkAnswer(this)"
         >
-          أكبر &gt;
+          أكبر >
         </button>
 
         <button
           class="answer"
-          onclick="checkAnswer('<')"
+          data-answer="<"
+          onclick="checkAnswer(this)"
         >
-          أصغر &lt;
+          أصغر <
         </button>
 
         <button
           class="answer"
-          onclick="checkAnswer('=')"
+          data-answer="="
+          onclick="checkAnswer(this)"
         >
           يساوي =
         </button>
@@ -1800,9 +2138,9 @@ function comparisonQuestion() {
 }
 
 
-/* ================================
-   اللغة العربية
-================================ */
+/* =====================================================
+   أسماء الأعداد
+===================================================== */
 
 const numberWords = {
 
@@ -1821,32 +2159,48 @@ const numberWords = {
 
 function arabicNumberQuestion() {
 
-  const number=random(1,9);
+  const number =
+    random(1,9);
 
-  correctAnswer=
+
+  correctAnswer =
     numberWords[number];
 
 
-  const choices=
-    shuffle(
-      [
-        correctAnswer,
-        numberWords[
-          randomOther(number)
-        ],
-        numberWords[
-          randomOther(number)
-        ],
-        numberWords[
-          randomOther(number)
-        ]
-      ]
-    );
+  let choices = [
+    correctAnswer
+  ];
+
+
+  while(
+    choices.length < 4
+  ) {
+
+    const n =
+      random(1,9);
+
+    const word =
+      numberWords[n];
+
+
+    if(
+      !choices.includes(word)
+    ) {
+
+      choices.push(word);
+
+    }
+
+  }
+
+
+  choices =
+    shuffle(choices);
 
 
   document.getElementById(
     "gameContent"
-  ).innerHTML=`
+  ).innerHTML = `
 
     <div class="question-box">
 
@@ -1855,7 +2209,7 @@ function arabicNumberQuestion() {
       </div>
 
       <div class="question">
-        ${ar(number)}
+        ${displayNumber(number)}
       </div>
 
       <div class="answers">
@@ -1869,27 +2223,35 @@ function arabicNumberQuestion() {
 }
 
 
+/* =====================================================
+   الاستماع للعدد
+===================================================== */
+
 function listenNumberQuestion() {
 
-  const number=random(1,9);
+  const number =
+    random(1,9);
 
-  correctAnswer=number;
 
-  correctText=
+  correctAnswer =
+    number;
+
+
+  correctText =
     numberWords[number];
 
 
-  const options=
+  const options =
     createOptions(
       number,
       1,
       9
-    ).map(ar);
+    );
 
 
   document.getElementById(
     "gameContent"
-  ).innerHTML=`
+  ).innerHTML = `
 
     <div class="question-box">
 
@@ -1919,7 +2281,9 @@ function listenNumberQuestion() {
 
   setTimeout(
     function() {
+
       speak(correctText);
+
     },
     400
   );
@@ -1927,27 +2291,35 @@ function listenNumberQuestion() {
 }
 
 
+/* =====================================================
+   الكلمة والرقم
+===================================================== */
+
 function wordNumberQuestion() {
 
-  const number=random(1,9);
+  const number =
+    random(1,9);
 
-  correctAnswer=number;
 
-  correctText=
+  correctAnswer =
+    number;
+
+
+  correctText =
     numberWords[number];
 
 
-  const options=
+  const options =
     createOptions(
       number,
       1,
       9
-    ).map(ar);
+    );
 
 
   document.getElementById(
     "gameContent"
-  ).innerHTML=`
+  ).innerHTML = `
 
     <div class="question-box">
 
@@ -1970,22 +2342,9 @@ function wordNumberQuestion() {
 }
 
 
-function randomOther(number) {
-
-  let value=random(1,9);
-
-  while(value===number) {
-    value=random(1,9);
-  }
-
-  return value;
-
-}
-
-
-/* ================================
+/* =====================================================
    المواطنة الصالحة
-================================ */
+===================================================== */
 
 const citizenshipQuestions = {
 
@@ -1993,99 +2352,119 @@ const citizenshipQuestions = {
 
     {
       q:"أين نضع النفايات؟",
+
       options:[
         "في سلة المهملات",
         "على الأرض",
         "في الملعب"
       ],
+
       answer:"في سلة المهملات"
     },
 
     {
       q:"ماذا نفعل عندما ينتهي الدرس؟",
+
       options:[
         "نحافظ على ترتيب الصف",
         "نرمي الكتب",
         "نترك الصف متسخًا"
       ],
+
       answer:"نحافظ على ترتيب الصف"
     },
 
     {
       q:"كيف نحافظ على مدرستنا؟",
+
       options:[
         "نحافظ على نظافتها",
         "نكسر الأشياء",
         "نكتب على الجدران"
       ],
+
       answer:"نحافظ على نظافتها"
     }
 
   ],
+
 
   cooperation: [
 
     {
       q:"ماذا نفعل عندما يحتاج زميلنا إلى مساعدة؟",
+
       options:[
         "نساعده",
         "نتركه",
         "نسخر منه"
       ],
+
       answer:"نساعده"
     },
 
     {
       q:"كيف نتعامل مع زملائنا؟",
+
       options:[
         "باحترام",
         "بالأذى",
         "بالسخرية"
       ],
+
       answer:"باحترام"
     },
 
     {
       q:"ماذا يعني التعاون؟",
+
       options:[
         "أن نساعد بعضنا",
         "أن نؤذي بعضنا",
         "أن نرفض المساعدة"
       ],
+
       answer:"أن نساعد بعضنا"
     }
 
   ],
 
+
   environment: [
 
     {
       q:"كيف نحافظ على البيئة؟",
+
       options:[
         "نحافظ على نظافتها",
         "نرمي النفايات",
         "نؤذي الأشجار"
       ],
+
       answer:"نحافظ على نظافتها"
     },
 
     {
       q:"ماذا نفعل مع النفايات؟",
+
       options:[
         "نضعها في مكانها",
         "نرميها في الشارع",
         "نتركها في الصف"
       ],
+
       answer:"نضعها في مكانها"
     },
 
     {
       q:"كيف نحافظ على الأشجار؟",
+
       options:[
         "لا نؤذيها",
         "نكسر أغصانها",
         "نرمي عليها النفايات"
       ],
+
       answer:"لا نؤذيها"
     }
 
@@ -2096,27 +2475,30 @@ const citizenshipQuestions = {
 
 function citizenshipQuestion(type) {
 
-  const list=
+  const list =
     citizenshipQuestions[type];
 
 
-  const item=
+  const item =
     list[
-      random(0,list.length-1)
+      random(
+        0,
+        list.length-1
+      )
     ];
 
 
-  correctAnswer=
+  correctAnswer =
     item.answer;
 
 
-  const options=
+  const options =
     shuffle(item.options);
 
 
   document.getElementById(
     "gameContent"
-  ).innerHTML=`
+  ).innerHTML = `
 
     <div class="question-box">
 
@@ -2146,9 +2528,9 @@ function citizenshipQuestion(type) {
 }
 
 
-/* ================================
+/* =====================================================
    التربية الإسلامية
-================================ */
+===================================================== */
 
 const islamicQuestions = {
 
@@ -2156,99 +2538,119 @@ const islamicQuestions = {
 
     {
       q:"كيف نعامل الوالدين؟",
+
       options:[
         "باحترام وطاعة في الخير",
         "بالصراخ",
         "بالإهمال"
       ],
+
       answer:"باحترام وطاعة في الخير"
     },
 
     {
       q:"ماذا نفعل عندما يحتاج أحد الوالدين إلى مساعدة؟",
+
       options:[
         "نساعده",
         "نتجاهله",
         "نغضب منه"
       ],
+
       answer:"نساعده"
     },
 
     {
       q:"أي سلوك جميل مع الوالدين؟",
+
       options:[
         "الكلام الطيب",
         "الصراخ",
         "الإيذاء"
       ],
+
       answer:"الكلام الطيب"
     }
 
   ],
 
+
   goodBehavior: [
 
     {
       q:"أي سلوك يدل على الأمانة؟",
+
       options:[
         "أعيد الشيء لصاحبه",
         "آخذ ما ليس لي",
         "أخفي الأشياء"
       ],
+
       answer:"أعيد الشيء لصاحبه"
     },
 
     {
       q:"ماذا نفعل عندما نخطئ؟",
+
       options:[
         "نعترف بالخطأ ونعتذر",
         "نكذب",
         "نلوم الآخرين"
       ],
+
       answer:"نعترف بالخطأ ونعتذر"
     },
 
     {
       q:"أي سلوك حسن؟",
+
       options:[
         "أساعد الآخرين",
         "أؤذي الآخرين",
         "أسخر من الآخرين"
       ],
+
       answer:"أساعد الآخرين"
     }
 
   ],
 
+
   cleanliness: [
 
     {
       q:"ماذا نفعل قبل الطعام؟",
+
       options:[
         "نغسل أيدينا",
         "نترك أيدينا متسخة",
         "نرمي الطعام"
       ],
+
       answer:"نغسل أيدينا"
     },
 
     {
       q:"كيف نحافظ على نظافتنا؟",
+
       options:[
         "نحافظ على أجسامنا وملابسنا",
         "نهمل النظافة",
         "نرمي النفايات حولنا"
       ],
+
       answer:"نحافظ على أجسامنا وملابسنا"
     },
 
     {
       q:"أين نضع النفايات؟",
+
       options:[
         "في سلة المهملات",
         "على الأرض",
         "في الطريق"
       ],
+
       answer:"في سلة المهملات"
     }
 
@@ -2259,27 +2661,30 @@ const islamicQuestions = {
 
 function islamicQuestion(type) {
 
-  const list=
+  const list =
     islamicQuestions[type];
 
 
-  const item=
+  const item =
     list[
-      random(0,list.length-1)
+      random(
+        0,
+        list.length-1
+      )
     ];
 
 
-  correctAnswer=
+  correctAnswer =
     item.answer;
 
 
-  const options=
+  const options =
     shuffle(item.options);
 
 
   document.getElementById(
     "gameContent"
-  ).innerHTML=`
+  ).innerHTML = `
 
     <div class="question-box">
 
@@ -2309,41 +2714,54 @@ function islamicQuestion(type) {
 }
 
 
-/* ================================
-   فحص الإجابة
-================================ */
+/* =====================================================
+   فحص الإجابة - الإصلاح الأساسي
+===================================================== */
 
-function checkAnswer(answer) {
+function checkAnswer(button) {
 
   if(answered) {
     return;
   }
 
 
-  answered=true;
+  answered = true;
 
 
-  const buttons=
+  const userAnswer =
+    button.dataset.answer;
+
+
+  const rightAnswer =
+    String(correctAnswer);
+
+
+  const buttons =
     document.querySelectorAll(
       ".answer"
     );
 
 
   buttons.forEach(
-    function(button) {
+    function(item) {
 
-      button.disabled=true;
+      item.disabled = true;
 
-      const text=
-        button.textContent.trim();
+
+      const itemAnswer =
+        item.dataset.answer;
 
 
       if(
-        text ===
-        String(correctAnswer)
+        normalizeArabicNumber(
+          itemAnswer
+        ) ===
+        normalizeArabicNumber(
+          rightAnswer
+        )
       ) {
 
-        button.classList.add(
+        item.classList.add(
           "correct"
         );
 
@@ -2353,9 +2771,13 @@ function checkAnswer(answer) {
   );
 
 
-  const isCorrect=
-    String(answer) ===
-    String(correctAnswer);
+  const isCorrect =
+    normalizeArabicNumber(
+      userAnswer
+    ) ===
+    normalizeArabicNumber(
+      rightAnswer
+    );
 
 
   if(isCorrect) {
@@ -2373,12 +2795,20 @@ function checkAnswer(answer) {
 
     celebration();
 
-  } else {
+  }
+
+  else {
 
     showFeedback(
       "💡 حاول مرة أخرى! الإجابة الصحيحة هي: " +
-      correctAnswer,
+      displayNumber(
+        rightAnswer
+      ),
       false
+    );
+
+    button.classList.add(
+      "wrong"
     );
 
     wrongSound();
@@ -2395,20 +2825,26 @@ function checkAnswer(answer) {
 }
 
 
+/* =====================================================
+   رسالة الإجابة
+===================================================== */
+
 function showFeedback(
   text,
   good
 ) {
 
-  const feedback=
+  const feedback =
     document.getElementById(
       "feedback"
     );
 
 
-  feedback.textContent=text;
+  feedback.textContent =
+    text;
 
-  feedback.className=
+
+  feedback.className =
     good
       ? "feedback good"
       : "feedback bad";
@@ -2416,24 +2852,25 @@ function showFeedback(
 }
 
 
-/* ================================
-   الأصوات
-================================ */
+/* =====================================================
+   أصوات بسيطة
+===================================================== */
 
-let audioContext=null;
+let audioContext = null;
 
 
 function getAudioContext() {
 
   if(!audioContext) {
 
-    audioContext=
+    audioContext =
       new(
         window.AudioContext ||
         window.webkitAudioContext
       )();
 
   }
+
 
   return audioContext;
 
@@ -2448,21 +2885,23 @@ function playTone(
 
   try {
 
-    const ctx=
+    const ctx =
       getAudioContext();
 
 
-    const oscillator=
+    const oscillator =
       ctx.createOscillator();
 
 
-    const gain=
+    const gain =
       ctx.createGain();
 
 
-    oscillator.type="sine";
+    oscillator.type =
+      "sine";
 
-    oscillator.frequency.value=
+
+    oscillator.frequency.value =
       frequency;
 
 
@@ -2473,8 +2912,8 @@ function playTone(
     );
 
 
-    const now=
-      ctx.currentTime+
+    const now =
+      ctx.currentTime +
       delay;
 
 
@@ -2502,7 +2941,9 @@ function playTone(
       now+duration
     );
 
-  } catch(e) {}
+  }
+
+  catch(e) {}
 
 }
 
@@ -2547,12 +2988,18 @@ function wrongSound() {
 }
 
 
+/* =====================================================
+   القراءة الصوتية
+===================================================== */
+
 function speak(text) {
 
   if(
     !("speechSynthesis" in window)
   ) {
+
     return;
+
   }
 
 
@@ -2561,31 +3008,38 @@ function speak(text) {
     window.speechSynthesis.cancel();
 
 
-    const speech=
+    const speech =
       new SpeechSynthesisUtterance(
         text
       );
 
 
-    speech.lang="ar-SA";
+    speech.lang =
+      "ar-SA";
 
-    speech.rate=.8;
 
-    speech.pitch=1.1;
+    speech.rate =
+      .8;
+
+
+    speech.pitch =
+      1.1;
 
 
     window.speechSynthesis.speak(
       speech
     );
 
-  } catch(e) {}
+  }
+
+  catch(e) {}
 
 }
 
 
 function readQuestion() {
 
-  const messages={
+  const messages = {
 
     add:
       "احسب عملية الجمع واختر الإجابة الصحيحة",
@@ -2606,26 +3060,27 @@ function readQuestion() {
 
 
   speak(
-    messages[gameType] ||
+    messages[gameType]
+    ||
     "استمع إلى السؤال واختر الإجابة الصحيحة"
   );
 
 }
 
 
-/* ================================
+/* =====================================================
    الاحتفال
-================================ */
+===================================================== */
 
 function celebration() {
 
-  const area=
+  const area =
     document.getElementById(
       "celebrate"
     );
 
 
-  const symbols=[
+  const symbols = [
     "⭐",
     "🎉",
     "✨",
@@ -2641,17 +3096,17 @@ function celebration() {
     i++
   ) {
 
-    const item=
+    const item =
       document.createElement(
         "div"
       );
 
 
-    item.className=
+    item.className =
       "confetti";
 
 
-    item.textContent=
+    item.textContent =
       symbols[
         random(
           0,
@@ -2660,14 +3115,14 @@ function celebration() {
       ];
 
 
-    item.style.left=
-      random(5,95)+"%";
+    item.style.left =
+      random(5,95) + "%";
 
 
-    item.style.animationDelay=
+    item.style.animationDelay =
       (
         Math.random()*.5
-      )+"s";
+      ) + "s";
 
 
     area.appendChild(item);
@@ -2675,7 +3130,9 @@ function celebration() {
 
     setTimeout(
       function() {
+
         item.remove();
+
       },
       2200
     );
@@ -2685,9 +3142,9 @@ function celebration() {
 }
 
 
-/* ================================
-   النتيجة
-================================ */
+/* =====================================================
+   النتيجة النهائية
+===================================================== */
 
 function finishGame() {
 
@@ -2707,71 +3164,81 @@ function finishGame() {
 
   document.getElementById(
     "score"
-  ).textContent=
-    ar(score);
+  ).textContent =
+    displayNumber(score);
 
 
   document.getElementById(
     "total"
-  ).textContent=
-    ar(totalQuestions);
+  ).textContent =
+    displayNumber(
+      totalQuestions
+    );
 
 
   document.getElementById(
     "certificateName"
-  ).textContent=
+  ).textContent =
     getName();
 
 
-  const percentage=
-    score/
-    totalQuestions*
+  const percentage =
+    score /
+    totalQuestions *
     100;
 
 
-  let emoji="💪";
+  let emoji =
+    "💪";
 
-  let title="أحسنت يا بطل!";
+  let title =
+    "أحسنت يا بطل!";
 
-  let message=
+  let message =
     "استمر في التعلم والتدريب!";
 
 
   if(
-    percentage>=90
+    percentage >= 90
   ) {
 
-    emoji="🏆";
+    emoji =
+      "🏆";
 
-    title="رائع جدًا!";
+    title =
+      "رائع جدًا!";
 
-    message=
+    message =
       "أنت بطل متميز! إجابات رائعة.";
 
   }
 
   else if(
-    percentage>=70
+    percentage >= 70
   ) {
 
-    emoji="🌟";
+    emoji =
+      "🌟";
 
-    title="ممتاز!";
+    title =
+      "ممتاز!";
 
-    message=
+    message =
       "نتيجة جميلة جدًا، استمر!";
 
   }
 
   else if(
-    percentage>=50
+    percentage >= 50
   ) {
 
-    emoji="😊";
+    emoji =
+      "😊";
 
-    title="جيد جدًا!";
+    title =
+      "جيد جدًا!";
 
-    message=
+    message =
       "أنت تتقدم بشكل رائع.";
 
   }
@@ -2779,35 +3246,37 @@ function finishGame() {
 
   document.getElementById(
     "resultEmoji"
-  ).textContent=emoji;
+  ).textContent =
+    emoji;
 
 
   document.getElementById(
     "resultTitle"
-  ).textContent=
-    getName()+
-    "، "+
+  ).textContent =
+    getName() +
+    "، " +
     title;
 
 
   document.getElementById(
     "resultMessage"
-  ).textContent=
+  ).textContent =
     message;
 
 
-  const starCount=
+  const starCount =
     Math.max(
       1,
       Math.round(
-        percentage/20
+        percentage /
+        20
       )
     );
 
 
   document.getElementById(
     "resultStars"
-  ).textContent=
+  ).textContent =
     "⭐".repeat(
       starCount
     );
@@ -2815,12 +3284,12 @@ function finishGame() {
 
   document.getElementById(
     "progressBar"
-  ).style.width=
+  ).style.width =
     "100%";
 
 
   if(
-    percentage>=70
+    percentage >= 70
   ) {
 
     celebration();
@@ -2829,16 +3298,16 @@ function finishGame() {
 
 
   window.scrollTo({
-    top:0,
-    behavior:"smooth"
+    top: 0,
+    behavior: "smooth"
   });
 
 }
 
 
-/* ================================
+/* =====================================================
    إعادة اللعبة
-================================ */
+===================================================== */
 
 function restartGame() {
 
@@ -2867,7 +3336,7 @@ function backToMenu() {
 
   document.getElementById(
     "menu"
-  ).style.display=
+  ).style.display =
     "block";
 
 
@@ -2876,9 +3345,9 @@ function backToMenu() {
 }
 
 
-/* ================================
+/* =====================================================
    حفظ البيانات
-================================ */
+===================================================== */
 
 window.addEventListener(
   "beforeunload",
@@ -2888,6 +3357,7 @@ window.addEventListener(
       "grade1MathName",
       studentName.value
     );
+
 
     localStorage.setItem(
       "grade1MathStars",
