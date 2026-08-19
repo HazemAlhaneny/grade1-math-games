@@ -1,2368 +1,2903 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#4f46e5">
-
-  <title>ألعاب الرياضيات - الصف الأول</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Tahoma, Arial, sans-serif;
-      background:
-        radial-gradient(circle at 10% 10%, #dbeafe 0 10%, transparent 25%),
-        radial-gradient(circle at 90% 20%, #fce7f3 0 10%, transparent 25%),
-        radial-gradient(circle at 50% 100%, #dcfce7 0 10%, transparent 25%),
-        #f8fafc;
-      color: #1e293b;
-    }
-
-    button,
-    input {
-      font-family: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .top {
-      background: linear-gradient(135deg, #4f46e5, #7c3aed);
-      color: white;
-      text-align: center;
-      padding: 28px 15px 42px;
-      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.25);
-    }
-
-    .top h1 {
-      margin: 0;
-      font-size: clamp(28px, 7vw, 48px);
-    }
-
-    .top p {
-      margin: 12px 0 0;
-      font-size: 19px;
-    }
-
-    .decorations {
-      font-size: 30px;
-      margin-bottom: 12px;
-      letter-spacing: 8px;
-    }
-
-    .student-box {
-      width: min(900px, 94%);
-      margin: -25px auto 25px;
-      position: relative;
-      z-index: 5;
-    }
-
-    .student-card {
-      background: white;
-      border-radius: 25px;
-      padding: 18px;
-      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .student-card label {
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    .student-card input {
-      border: 2px solid #cbd5e1;
-      border-radius: 14px;
-      padding: 12px 15px;
-      font-size: 17px;
-      outline: none;
-      min-width: 230px;
-    }
-
-    .student-card input:focus {
-      border-color: #6366f1;
-    }
-
-    .stars-box {
-      background: #fef3c7;
-      color: #92400e;
-      border-radius: 14px;
-      padding: 12px 17px;
-      font-weight: bold;
-    }
-
-    .container {
-      width: min(1050px, 94%);
-      margin: auto;
-      padding-bottom: 60px;
-    }
-
-    .welcome {
-      text-align: center;
-      margin: 20px 0 25px;
-    }
-
-    .welcome h2 {
-      color: #312e81;
-      font-size: 30px;
-      margin: 0 0 8px;
-    }
-
-    .welcome p {
-      color: #64748b;
-      font-size: 17px;
-      margin: 0;
-    }
-
-    .games {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-    }
-
-    .game-card {
-      background: white;
-      border-radius: 25px;
-      padding: 24px 18px;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
-      border: 3px solid transparent;
-      transition: 0.25s;
-    }
-
-    .game-card:hover {
-      transform: translateY(-5px);
-      border-color: #c7d2fe;
-    }
-
-    .game-icon {
-      font-size: 58px;
-    }
-
-    .game-card h3 {
-      color: #312e81;
-      font-size: 23px;
-      margin: 10px 0;
-    }
-
-    .game-card p {
-      color: #64748b;
-      line-height: 1.6;
-      min-height: 48px;
-    }
-
-    .main-button {
-      border: none;
-      color: white;
-      background: linear-gradient(135deg, #4f46e5, #7c3aed);
-      padding: 13px 23px;
-      border-radius: 15px;
-      font-size: 17px;
-      font-weight: bold;
-      box-shadow: 0 5px 14px rgba(79, 70, 229, 0.25);
-      transition: 0.2s;
-    }
-
-    .main-button:hover {
-      transform: scale(1.04);
-    }
-
-    .back-button {
-      border: 2px solid #cbd5e1;
-      color: #334155;
-      background: white;
-      padding: 11px 18px;
-      border-radius: 14px;
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .screen {
-      display: none;
-      background: white;
-      border-radius: 28px;
-      padding: 25px;
-      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
-      margin-top: 25px;
-    }
-
-    .screen.active {
-      display: block;
-      animation: showScreen 0.35s ease;
-    }
-
-    @keyframes showScreen {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .game-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .game-top h2 {
-      color: #312e81;
-      margin: 0;
-    }
-
-    .counter {
-      background: #eef2ff;
-      color: #4338ca;
-      padding: 10px 15px;
-      border-radius: 13px;
-      font-weight: bold;
-    }
-
-    .progress {
-      height: 12px;
-      background: #e2e8f0;
-      border-radius: 20px;
-      overflow: hidden;
-      margin: 18px 0;
-    }
-
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #4f46e5, #a855f7);
-      transition: width 0.3s;
-    }
-
-    .question-box {
-      background: #f8fafc;
-      border: 3px dashed #c7d2fe;
-      border-radius: 25px;
-      text-align: center;
-      padding: 28px 15px;
-    }
-
-    .hint {
-      color: #64748b;
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
-
-    .question {
-      font-size: clamp(42px, 10vw, 70px);
-      font-weight: bold;
-      color: #1e1b4b;
-      margin: 18px 0 25px;
-    }
-
-    .sound-button {
-      border: none;
-      background: #dbeafe;
-      color: #1d4ed8;
-      border-radius: 50%;
-      width: 58px;
-      height: 58px;
-      font-size: 28px;
-      margin-bottom: 15px;
-    }
-
-    .answers {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    .answer {
-      border: 3px solid #c7d2fe;
-      background: white;
-      color: #312e81;
-      border-radius: 18px;
-      padding: 17px 10px;
-      font-size: 31px;
-      font-weight: bold;
-      transition: 0.2s;
-    }
-
-    .answer:hover {
-      background: #eef2ff;
-      transform: translateY(-3px);
-    }
-
-    .answer.correct {
-      background: #dcfce7;
-      border-color: #22c55e;
-      color: #166534;
-    }
-
-    .answer.wrong {
-      background: #fee2e2;
-      border-color: #ef4444;
-      color: #991b1b;
-    }
-
-    .feedback {
-      text-align: center;
-      min-height: 55px;
-      font-size: 23px;
-      font-weight: bold;
-      margin: 18px 0;
-    }
-
-    .good {
-      color: #15803d;
-    }
-
-    .bad {
-      color: #dc2626;
-    }
-
-    .controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 15px;
-    }
-
-    .count-items {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      max-width: 600px;
-      margin: 20px auto;
-      font-size: 45px;
-      line-height: 1.2;
-    }
-
-    .result {
-      text-align: center;
-    }
-
-    .result-emoji {
-      font-size: 90px;
-    }
-
-    .result h2 {
-      color: #312e81;
-      font-size: 34px;
-    }
-
-    .result-score {
-      color: #4f46e5;
-      font-size: 58px;
-      font-weight: bold;
-      margin: 15px;
-    }
-
-    .result-stars {
-      font-size: 38px;
-      margin: 15px;
-    }
-
-    .certificate {
-      max-width: 650px;
-      margin: 20px auto;
-      background: linear-gradient(135deg, #fef3c7, #fff7ed);
-      border: 4px solid #f59e0b;
-      border-radius: 25px;
-      padding: 25px;
-      text-align: center;
-    }
-
-    .certificate h3 {
-      color: #92400e;
-      font-size: 27px;
-      margin: 5px;
-    }
-
-    .certificate p {
-      font-size: 18px;
-      line-height: 1.8;
-    }
-
-    .footer {
-      background: #1e1b4b;
-      color: white;
-      text-align: center;
-      padding: 30px 15px;
-    }
-
-    .footer p {
-      margin: 7px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .celebrate {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1000;
-      overflow: hidden;
-    }
-
-    .confetti {
-      position: absolute;
-      top: -30px;
-      font-size: 28px;
-      animation: fall 1.8s linear forwards;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(110vh) rotate(720deg);
-        opacity: 0;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .answers {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .student-card {
-        flex-direction: column;
-      }
-
-      .student-card input {
-        width: 100%;
-      }
-
-      .screen {
-        padding: 16px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#4f46e5">
+<title>ألعاب الصف الأول التعليمية</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Tahoma, Arial, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, #dbeafe 0 8%, transparent 25%),
+    radial-gradient(circle at 90% 20%, #fce7f3 0 8%, transparent 25%),
+    radial-gradient(circle at 50% 100%, #dcfce7 0 10%, transparent 28%),
+    #f8fafc;
+  color: #1e293b;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.top {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  text-align: center;
+  padding: 28px 15px 42px;
+  box-shadow: 0 8px 25px rgba(79,70,229,.25);
+}
+
+.decorations {
+  font-size: 30px;
+  letter-spacing: 7px;
+  margin-bottom: 10px;
+}
+
+.top h1 {
+  margin: 0;
+  font-size: clamp(28px, 7vw, 48px);
+}
+
+.top p {
+  margin: 10px 0 0;
+  font-size: 19px;
+}
+
+.student-box {
+  width: min(1000px,94%);
+  margin: -25px auto 25px;
+  position: relative;
+  z-index: 5;
+}
+
+.student-card {
+  background: white;
+  border-radius: 25px;
+  padding: 18px;
+  box-shadow: 0 12px 35px rgba(15,23,42,.12);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.student-card label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.student-card input {
+  min-width: 230px;
+  padding: 12px 15px;
+  border: 2px solid #cbd5e1;
+  border-radius: 14px;
+  font-size: 17px;
+  outline: none;
+}
+
+.student-card input:focus {
+  border-color: #6366f1;
+}
+
+.stars-box {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: bold;
+}
+
+.container {
+  width: min(1100px,94%);
+  margin: auto;
+  padding-bottom: 60px;
+}
+
+.welcome {
+  text-align: center;
+  margin: 20px 0 25px;
+}
+
+.welcome h2 {
+  color: #312e81;
+  font-size: 30px;
+  margin: 0 0 8px;
+}
+
+.welcome p {
+  color: #64748b;
+  font-size: 17px;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
+  gap: 20px;
+}
+
+.category {
+  background: white;
+  border-radius: 28px;
+  padding: 25px 18px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(15,23,42,.09);
+  transition: .25s;
+  border: 3px solid transparent;
+}
+
+.category:hover {
+  transform: translateY(-6px);
+  border-color: #c7d2fe;
+}
+
+.category-icon {
+  font-size: 65px;
+}
+
+.category h3 {
+  font-size: 25px;
+  margin: 10px 0;
+  color: #312e81;
+}
+
+.category p {
+  color: #64748b;
+  line-height: 1.7;
+  min-height: 55px;
+}
+
+.main-button {
+  border: none;
+  color: white;
+  background: linear-gradient(135deg,#4f46e5,#7c3aed);
+  padding: 13px 23px;
+  border-radius: 15px;
+  font-size: 17px;
+  font-weight: bold;
+  box-shadow: 0 5px 14px rgba(79,70,229,.25);
+  transition: .2s;
+}
+
+.main-button:hover {
+  transform: scale(1.04);
+}
+
+.green-button {
+  background: linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+.orange-button {
+  background: linear-gradient(135deg,#ea580c,#f97316);
+}
+
+.blue-button {
+  background: linear-gradient(135deg,#0284c7,#2563eb);
+}
+
+.pink-button {
+  background: linear-gradient(135deg,#db2777,#ec4899);
+}
+
+.back-button {
+  border: 2px solid #cbd5e1;
+  background: white;
+  color: #334155;
+  padding: 11px 18px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.screen {
+  display: none;
+  background: white;
+  border-radius: 28px;
+  padding: 25px;
+  box-shadow: 0 12px 40px rgba(15,23,42,.12);
+  margin-top: 25px;
+}
+
+.screen.active {
+  display: block;
+  animation: show .35s ease;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.game-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.game-top h2 {
+  margin: 0;
+  color: #312e81;
+}
+
+.counter {
+  background: #eef2ff;
+  color: #4338ca;
+  padding: 10px 15px;
+  border-radius: 13px;
+  font-weight: bold;
+}
+
+.progress {
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 18px 0;
+}
+
+.progress-bar {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg,#4f46e5,#a855f7);
+  transition: width .3s;
+}
+
+.question-box {
+  background: #f8fafc;
+  border: 3px dashed #c7d2fe;
+  border-radius: 25px;
+  text-align: center;
+  padding: 28px 15px;
+}
+
+.hint {
+  color: #64748b;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.question {
+  font-size: clamp(38px,9vw,65px);
+  font-weight: bold;
+  color: #1e1b4b;
+  margin: 18px 0 25px;
+  line-height: 1.5;
+}
+
+.text-question {
+  font-size: clamp(25px,6vw,42px);
+}
+
+.sound-button {
+  border: none;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 14px;
+  max-width: 700px;
+  margin: auto;
+}
+
+.answer {
+  border: 3px solid #c7d2fe;
+  background: white;
+  color: #312e81;
+  border-radius: 18px;
+  padding: 17px 10px;
+  font-size: 28px;
+  font-weight: bold;
+  transition: .2s;
+}
+
+.answer:hover {
+  background: #eef2ff;
+  transform: translateY(-3px);
+}
+
+.answer.correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #166534;
+}
+
+.answer.wrong {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+.feedback {
+  text-align: center;
+  min-height: 55px;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 18px 0;
+}
+
+.good {
+  color: #15803d;
+}
+
+.bad {
+  color: #dc2626;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.count-items {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 700px;
+  margin: 20px auto;
+  font-size: 45px;
+}
+
+.result {
+  text-align: center;
+}
+
+.result-emoji {
+  font-size: 90px;
+}
+
+.result h2 {
+  color: #312e81;
+  font-size: 34px;
+}
+
+.result-score {
+  color: #4f46e5;
+  font-size: 58px;
+  font-weight: bold;
+  margin: 15px;
+}
+
+.result-stars {
+  font-size: 38px;
+}
+
+.certificate {
+  max-width: 700px;
+  margin: 20px auto;
+  background: linear-gradient(135deg,#fef3c7,#fff7ed);
+  border: 4px solid #f59e0b;
+  border-radius: 25px;
+  padding: 25px;
+}
+
+.certificate h3 {
+  color: #92400e;
+  font-size: 27px;
+}
+
+.certificate p {
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.footer {
+  background: #1e1b4b;
+  color: white;
+  text-align: center;
+  padding: 30px 15px;
+}
+
+.footer p {
+  margin: 7px;
+}
+
+.celebrate {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  top: -30px;
+  font-size: 28px;
+  animation: fall 1.8s linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@media(max-width:600px) {
+  .student-card {
+    flex-direction: column;
+  }
+
+  .student-card input {
+    width: 100%;
+  }
+
+  .answers {
+    grid-template-columns: 1fr;
+  }
+
+  .screen {
+    padding: 16px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <header class="top">
+<header class="top">
+  <div class="decorations">⭐ 🔢 📖 🤝 🕌</div>
 
-    <div class="decorations">
-      ⭐ 🔢 ➕ 🍎 🎈
+  <h1>🌟 ألعاب الصف الأول التعليمية 🌟</h1>
+
+  <p>
+    نتعلم ونلعب ونكتشف معًا
+  </p>
+</header>
+
+
+<div class="student-box">
+  <div class="student-card">
+
+    <label for="studentName">
+      👦 اسم الطالب:
+    </label>
+
+    <input
+      id="studentName"
+      type="text"
+      maxlength="30"
+      placeholder="اكتب اسمك هنا"
+    >
+
+    <div class="stars-box">
+      ⭐ النجوم:
+      <span id="stars">٠</span>
     </div>
 
-    <h1>
-      🧮 ألعاب الرياضيات
-    </h1>
+  </div>
+</div>
+
+
+<main class="container">
+
+<section id="menu">
+
+  <div class="welcome">
+
+    <h2>
+      🌈 مرحبًا يا بطل!
+    </h2>
 
     <p>
-      رحلة ممتعة مع الأعداد من ١ إلى ٩
+      اختر المجال الذي تريد أن تتعلم فيه
     </p>
 
-  </header>
+  </div>
 
 
-  <div class="student-box">
+  <div class="categories">
 
-    <div class="student-card">
+    <!-- الرياضيات -->
 
-      <label for="studentName">
-        👦 اسم الطالب:
-      </label>
+    <div class="category">
 
-      <input
-        id="studentName"
-        type="text"
-        maxlength="30"
-        placeholder="اكتب اسمك هنا"
+      <div class="category-icon">🧮</div>
+
+      <h3>الرياضيات</h3>
+
+      <p>
+        الأعداد من ١ إلى ٩،
+        والجمع والطرح ضمن العدد ٥.
+      </p>
+
+      <button
+        class="main-button"
+        onclick="showGames('math')"
       >
+        🎮 ابدأ الرياضيات
+      </button>
 
-      <div class="stars-box">
-        ⭐ النجوم:
-        <span id="stars">٠</span>
-      </div>
+    </div>
+
+
+    <!-- اللغة العربية -->
+
+    <div class="category">
+
+      <div class="category-icon">📖</div>
+
+      <h3>اللغة العربية</h3>
+
+      <p>
+        نتعلم أسماء الأعداد
+        ونربط الرقم بالكلمة.
+      </p>
+
+      <button
+        class="main-button blue-button"
+        onclick="showGames('arabic')"
+      >
+        📚 ابدأ العربية
+      </button>
+
+    </div>
+
+
+    <!-- المواطنة -->
+
+    <div class="category">
+
+      <div class="category-icon">🤝</div>
+
+      <h3>المواطنة الصالحة</h3>
+
+      <p>
+        نتعلم النظافة والتعاون
+        واحترام المدرسة والآخرين.
+      </p>
+
+      <button
+        class="main-button green-button"
+        onclick="showGames('citizenship')"
+      >
+        🌱 ابدأ المواطنة
+      </button>
+
+    </div>
+
+
+    <!-- التربية الإسلامية -->
+
+    <div class="category">
+
+      <div class="category-icon">🕌</div>
+
+      <h3>التربية الإسلامية</h3>
+
+      <p>
+        نتعلم القيم والآداب
+        والسلوك الحسن.
+      </p>
+
+      <button
+        class="main-button orange-button"
+        onclick="showGames('islamic')"
+      >
+        🌙 ابدأ التربية الإسلامية
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="gameScreen" class="screen">
+
+  <div class="game-top">
+
+    <h2 id="gameTitle">
+      اللعبة
+    </h2>
+
+    <div class="counter">
+
+      السؤال
+      <span id="questionNumber">١</span>
+
+      من
+
+      <span id="questionTotal">١٠</span>
 
     </div>
 
   </div>
 
 
-  <main class="container">
+  <div class="progress">
 
-    <section id="menu">
+    <div
+      id="progressBar"
+      class="progress-bar"
+    ></div>
 
-      <div class="welcome">
+  </div>
 
-        <h2>
-          🌟 مرحبًا يا بطل الرياضيات!
-        </h2>
 
-        <p>
-          اختر لعبة وتعلم الأعداد والجمع والطرح ضمن العدد ٥
-        </p>
-
-      </div>
-
-
-      <div class="games">
-
-        <div class="game-card">
-
-          <div class="game-icon">
-            ➕
-          </div>
-
-          <h3>
-            لعبة الجمع
-          </h3>
-
-          <p>
-            اجمع عددين ضمن العدد ٥ واختر الإجابة الصحيحة.
-          </p>
-
-          <button
-            class="main-button"
-            onclick="startGame('add')"
-          >
-            🎮 ابدأ
-          </button>
-
-        </div>
-
-
-        <div class="game-card">
-
-          <div class="game-icon">
-            ➖
-          </div>
-
-          <h3>
-            لعبة الطرح
-          </h3>
-
-          <p>
-            اطرح الأعداد بطريقة سهلة وممتعة ضمن العدد ٥.
-          </p>
-
-          <button
-            class="main-button"
-            onclick="startGame('sub')"
-          >
-            🎮 ابدأ
-          </button>
-
-        </div>
-
-
-        <div class="game-card">
-
-          <div class="game-icon">
-            🍎
-          </div>
-
-          <h3>
-            عدّ الأشياء
-          </h3>
-
-          <p>
-            عدّ التفاحات واختر العدد الصحيح من ١ إلى ٩.
-          </p>
-
-          <button
-            class="main-button"
-            onclick="startGame('count')"
-          >
-            🎮 ابدأ
-          </button>
-
-        </div>
-
-
-        <div class="game-card">
-
-          <div class="game-icon">
-            🔢
-          </div>
-
-          <h3>
-            اختر العدد
-          </h3>
-
-          <p>
-            تعرف على الأعداد من ١ إلى ٩ واختر العدد المطلوب.
-          </p>
-
-          <button
-            class="main-button"
-            onclick="startGame('numbers')"
-          >
-            🎮 ابدأ
-          </button>
-
-        </div>
-
-
-        <div class="game-card">
-
-          <div class="game-icon">
-            ⚖️
-          </div>
-
-          <h3>
-            أكبر أم أصغر؟
-          </h3>
-
-          <p>
-            قارن بين عددين من ١ إلى ٩.
-          </p>
-
-          <button
-            class="main-button"
-            onclick="startGame('compare')"
-          >
-            🎮 ابدأ
-          </button>
-
-        </div>
-
-
-        <div class="game-card">
-
-          <div class="game-icon">
-            🧩
-          </div>
-
-          <h3>
-            أكمل العدد
-          </h3>
-
-          <p>
-            اكتشف العدد الناقص وأكمل التسلسل.
-          </p>
-
-          <button
-            class="main-button"
-            onclick="startGame('sequence')"
-          >
-            🎮 ابدأ
-          </button>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <section id="gameScreen" class="screen">
-
-      <div class="game-top">
-
-        <h2 id="gameTitle">
-          اللعبة
-        </h2>
-
-        <div class="counter">
-
-          السؤال
-          <span id="questionNumber">١</span>
-          من
-          <span id="questionTotal">١٠</span>
-
-        </div>
-
-      </div>
-
-
-      <div class="progress">
-
-        <div
-          id="progressBar"
-          class="progress-bar"
-        ></div>
-
-      </div>
-
-
-      <div id="gameContent"></div>
-
-
-      <div
-        id="feedback"
-        class="feedback"
-      ></div>
-
-
-      <div class="controls">
-
-        <button
-          id="nextButton"
-          class="main-button hidden"
-          onclick="nextQuestion()"
-        >
-          السؤال التالي ➡️
-        </button>
-
-        <button
-          class="back-button"
-          onclick="backToMenu()"
-        >
-          🏠 الألعاب
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <section id="resultScreen" class="screen">
-
-      <div class="result">
-
-        <div
-          id="resultEmoji"
-          class="result-emoji"
-        >
-          🏆
-        </div>
-
-        <h2 id="resultTitle">
-          أحسنت!
-        </h2>
-
-        <div
-          id="resultStars"
-          class="result-stars"
-        >
-          ⭐⭐⭐⭐⭐
-        </div>
-
-        <p id="resultMessage">
-          نتيجة رائعة!
-        </p>
-
-        <div class="result-score">
-
-          <span id="score">
-            ٠
-          </span>
-
-          /
-
-          <span id="total">
-            ١٠
-          </span>
-
-        </div>
-
-
-        <div class="certificate">
-
-          <h3>
-            🏆 شهادة بطل الرياضيات 🏆
-          </h3>
-
-          <p>
-            نفتخر بك يا
-            <strong id="certificateName">
-              بطل الرياضيات
-            </strong>
-          </p>
-
-          <p>
-            لأنك تدربت على الأعداد والجمع والطرح
-            وأظهرت شجاعة ومثابرة رائعة.
-          </p>
-
-          <p>
-            👨‍🏫 إعداد المعلم:
-            <strong>
-              جميل سكاكية
-            </strong>
-          </p>
-
-          <p>
-            🏫 المدرسة:
-            <strong>
-              غازي القواسمة
-            </strong>
-          </p>
-
-        </div>
-
-
-        <div class="controls">
-
-          <button
-            class="main-button"
-            onclick="restartGame()"
-          >
-            🔄 العب مرة أخرى
-          </button>
-
-          <button
-            class="back-button"
-            onclick="backToMenu()"
-          >
-            🏠 الألعاب
-          </button>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <footer class="footer">
-
-    <p>
-      🌟 ألعاب الرياضيات للصف الأول 🌟
-    </p>
-
-    <p>
-      إعداد المعلم: جميل سكاكية
-    </p>
-
-    <p>
-      المدرسة: غازي القواسمة
-    </p>
-
-  </footer>
+  <div id="gameContent"></div>
 
 
   <div
-    id="celebrate"
-    class="celebrate"
+    id="feedback"
+    class="feedback"
   ></div>
 
 
-  <script>
+  <div class="controls">
 
-    /*
-      ============================================
-      ألعاب الرياضيات للصف الأول
-      الأعداد من ١ إلى ٩
-      الجمع والطرح ضمن العدد ٥
-      ============================================
-    */
+    <button
+      id="nextButton"
+      class="main-button hidden"
+      onclick="nextQuestion()"
+    >
+      السؤال التالي ➡️
+    </button>
+
+    <button
+      class="back-button"
+      onclick="backToMenu()"
+    >
+      🏠 الأقسام
+    </button>
+
+  </div>
+
+</section>
 
 
-    const arabicDigits =
-      "٠١٢٣٤٥٦٧٨٩";
+<section id="resultScreen" class="screen">
+
+  <div class="result">
+
+    <div
+      id="resultEmoji"
+      class="result-emoji"
+    >
+      🏆
+    </div>
+
+    <h2 id="resultTitle">
+      أحسنت!
+    </h2>
+
+    <div
+      id="resultStars"
+      class="result-stars"
+    >
+      ⭐⭐⭐⭐⭐
+    </div>
+
+    <p id="resultMessage">
+      نتيجة رائعة!
+    </p>
+
+    <div class="result-score">
+
+      <span id="score">٠</span>
+      /
+      <span id="total">١٠</span>
+
+    </div>
 
 
-    function ar(number) {
+    <div class="certificate">
 
-      return String(number)
-        .replace(/[0-9]/g, function(digit) {
+      <h3>
+        🏆 شهادة بطل التعلم 🏆
+      </h3>
 
-          return arabicDigits[
-            Number(digit)
-          ];
+      <p>
+        نفتخر بك يا
+        <strong id="certificateName">
+          بطل التعلم
+        </strong>
+      </p>
 
-        });
+      <p>
+        لأنك تعلمت وتدربت وأجبت
+        وحاولت بكل شجاعة.
+      </p>
 
+      <p>
+        👨‍🏫 إعداد المعلم:
+        <strong>جميل سكاكية</strong>
+      </p>
+
+      <p>
+        🏫 المدرسة:
+        <strong>غازي القواسمة</strong>
+      </p>
+
+    </div>
+
+
+    <div class="controls">
+
+      <button
+        class="main-button"
+        onclick="restartGame()"
+      >
+        🔄 العب مرة أخرى
+      </button>
+
+      <button
+        class="back-button"
+        onclick="backToMenu()"
+      >
+        🏠 الأقسام
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<footer class="footer">
+
+  <p>
+    🌟 ألعاب الصف الأول التعليمية 🌟
+  </p>
+
+  <p>
+    🧮 الرياضيات | 📖 اللغة العربية |
+    🤝 المواطنة الصالحة | 🕌 التربية الإسلامية
+  </p>
+
+  <p>
+    👨‍🏫 إعداد المعلم: جميل سكاكية
+  </p>
+
+  <p>
+    🏫 المدرسة: غازي القواسمة
+  </p>
+
+</footer>
+
+
+<div
+  id="celebrate"
+  class="celebrate"
+></div>
+
+
+<script>
+
+/* ================================
+   الأرقام العربية
+================================ */
+
+const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
+
+function ar(number) {
+
+  return String(number).replace(
+    /[0-9]/g,
+    function(digit) {
+      return arabicDigits[
+        Number(digit)
+      ];
     }
+  );
+
+}
 
 
-    function random(min, max) {
+/* ================================
+   بيانات الألعاب
+================================ */
 
-      return Math.floor(
-        Math.random() *
-        (max - min + 1)
-      ) + min;
+let currentCategory = "";
 
-    }
+let gameType = "";
 
+let question = 0;
 
-    function shuffle(array) {
+const totalQuestions = 10;
 
-      const copy = [...array];
+let score = 0;
 
-      for (
-        let i = copy.length - 1;
-        i > 0;
-        i--
-      ) {
+let correctAnswer = null;
 
-        const j =
-          Math.floor(
-            Math.random() *
-            (i + 1)
-          );
+let correctText = "";
 
-        [
-          copy[i],
-          copy[j]
-        ] = [
-          copy[j],
-          copy[i]
-        ];
-
-      }
-
-      return copy;
-
-    }
+let answered = false;
 
 
-    let gameType = "";
+/* ================================
+   النجوم واسم الطالب
+================================ */
 
-    let question = 0;
-
-    const totalQuestions = 10;
-
-    let score = 0;
-
-    let correctAnswer = null;
-
-    let answered = false;
+let stars =
+  Number(
+    localStorage.getItem(
+      "grade1MathStars"
+    ) || 0
+  );
 
 
-    let stars =
-      Number(
-        localStorage.getItem(
-          "grade1MathStars"
-        ) || 0
+const studentName =
+  document.getElementById(
+    "studentName"
+  );
+
+
+const savedName =
+  localStorage.getItem(
+    "grade1MathName"
+  );
+
+
+if (savedName) {
+  studentName.value =
+    savedName;
+}
+
+
+studentName.addEventListener(
+  "input",
+  function() {
+
+    localStorage.setItem(
+      "grade1MathName",
+      this.value
+    );
+
+  }
+);
+
+
+updateStars();
+
+
+function updateStars() {
+
+  document.getElementById(
+    "stars"
+  ).textContent =
+    ar(stars);
+
+}
+
+
+function addStar() {
+
+  stars++;
+
+  localStorage.setItem(
+    "grade1MathStars",
+    String(stars)
+  );
+
+  updateStars();
+
+}
+
+
+function getName() {
+
+  return (
+    studentName.value.trim()
+    ||
+    "بطل التعلم"
+  );
+
+}
+
+
+/* ================================
+   عرض الألعاب
+================================ */
+
+function showGames(category) {
+
+  currentCategory =
+    category;
+
+  const titles = {
+
+    math:
+      "🧮 ألعاب الرياضيات",
+
+    arabic:
+      "📖 ألعاب اللغة العربية",
+
+    citizenship:
+      "🤝 ألعاب المواطنة الصالحة",
+
+    islamic:
+      "🕌 ألعاب التربية الإسلامية"
+
+  };
+
+
+  let buttons = "";
+
+
+  if (category === "math") {
+
+    buttons = `
+
+      <div class="category">
+        <div class="category-icon">➕</div>
+        <h3>الجمع ضمن ٥</h3>
+        <p>اجمع عددين واختر الإجابة الصحيحة.</p>
+        <button
+          class="main-button"
+          onclick="startGame('add')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+      <div class="category">
+        <div class="category-icon">➖</div>
+        <h3>الطرح ضمن ٥</h3>
+        <p>اطرح عددين ضمن العدد ٥.</p>
+        <button
+          class="main-button"
+          onclick="startGame('sub')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+      <div class="category">
+        <div class="category-icon">🍎</div>
+        <h3>عد الأشياء</h3>
+        <p>عد الأشياء واختر العدد من ١ إلى ٩.</p>
+        <button
+          class="main-button"
+          onclick="startGame('count')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+      <div class="category">
+        <div class="category-icon">🔢</div>
+        <h3>الأعداد ١ إلى ٩</h3>
+        <p>تعرف على الأعداد واختر العدد الصحيح.</p>
+        <button
+          class="main-button"
+          onclick="startGame('numbers')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+      <div class="category">
+        <div class="category-icon">⚖️</div>
+        <h3>أكبر أم أصغر؟</h3>
+        <p>قارن بين عددين من ١ إلى ٩.</p>
+        <button
+          class="main-button"
+          onclick="startGame('compare')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+    `;
+
+  }
+
+
+  if (category === "arabic") {
+
+    buttons = `
+
+      <div class="category">
+        <div class="category-icon">🔤</div>
+        <h3>اسم العدد</h3>
+        <p>اربط الرقم باسمه باللغة العربية.</p>
+        <button
+          class="main-button blue-button"
+          onclick="startGame('arabicNumber')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+      <div class="category">
+        <div class="category-icon">🔊</div>
+        <h3>استمع واختر</h3>
+        <p>استمع إلى اسم العدد واختر الرقم.</p>
+        <button
+          class="main-button blue-button"
+          onclick="startGame('listenNumber')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+      <div class="category">
+        <div class="category-icon">📝</div>
+        <h3>الكلمة والرقم</h3>
+        <p>اختر الرقم الذي يناسب الكلمة.</p>
+        <button
+          class="main-button blue-button"
+          onclick="startGame('wordNumber')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+    `;
+
+  }
+
+
+  if (category === "citizenship") {
+
+    buttons = `
+
+      <div class="category">
+        <div class="category-icon">🏫</div>
+        <h3>مدرستي جميلة</h3>
+        <p>نتعلم المحافظة على المدرسة ونظافتها.</p>
+        <button
+          class="main-button green-button"
+          onclick="startGame('school')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+      <div class="category">
+        <div class="category-icon">🤝</div>
+        <h3>أتعاون مع الآخرين</h3>
+        <p>نتعلم المساعدة والاحترام والتعاون.</p>
+        <button
+          class="main-button green-button"
+          onclick="startGame('cooperation')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+      <div class="category">
+        <div class="category-icon">🌳</div>
+        <h3>أحافظ على بيئتي</h3>
+        <p>نتعلم المحافظة على البيئة والنظافة.</p>
+        <button
+          class="main-button green-button"
+          onclick="startGame('environment')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+    `;
+
+  }
+
+
+  if (category === "islamic") {
+
+    buttons = `
+
+      <div class="category">
+        <div class="category-icon">❤️</div>
+        <h3>بر الوالدين</h3>
+        <p>نتعلم احترام الوالدين ومساعدتهما.</p>
+        <button
+          class="main-button orange-button"
+          onclick="startGame('parents')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+      <div class="category">
+        <div class="category-icon">🤲</div>
+        <h3>السلوك الحسن</h3>
+        <p>نتعلم الصدق والأمانة ومساعدة الآخرين.</p>
+        <button
+          class="main-button orange-button"
+          onclick="startGame('goodBehavior')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+      <div class="category">
+        <div class="category-icon">🧼</div>
+        <h3>النظافة</h3>
+        <p>نتعلم أهمية النظافة والعناية بأنفسنا.</p>
+        <button
+          class="main-button orange-button"
+          onclick="startGame('cleanliness')"
+        >
+          🎮 ابدأ
+        </button>
+      </div>
+
+    `;
+
+  }
+
+
+  document.getElementById(
+    "menu"
+  ).innerHTML = `
+
+    <div class="welcome">
+
+      <h2>${titles[category]}</h2>
+
+      <p>
+        اختر اللعبة التي تريدها
+      </p>
+
+    </div>
+
+    <div class="categories">
+
+      ${buttons}
+
+    </div>
+
+    <div class="controls">
+
+      <button
+        class="back-button"
+        onclick="restoreMenu()"
+      >
+        🏠 الأقسام الرئيسية
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+function restoreMenu() {
+
+  location.reload();
+
+}
+
+
+/* ================================
+   بدء اللعبة
+================================ */
+
+function startGame(type) {
+
+  gameType = type;
+
+  question = 0;
+
+  score = 0;
+
+  answered = false;
+
+  document.getElementById(
+    "menu"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "resultScreen"
+  ).classList.remove(
+    "active"
+  );
+
+
+  document.getElementById(
+    "gameScreen"
+  ).classList.add(
+    "active"
+  );
+
+
+  const titles = {
+
+    add:
+      "➕ الجمع ضمن ٥",
+
+    sub:
+      "➖ الطرح ضمن ٥",
+
+    count:
+      "🍎 عد الأشياء",
+
+    numbers:
+      "🔢 الأعداد من ١ إلى ٩",
+
+    compare:
+      "⚖️ أكبر أم أصغر؟",
+
+    arabicNumber:
+      "📖 اسم العدد",
+
+    listenNumber:
+      "🔊 استمع واختر",
+
+    wordNumber:
+      "📝 الكلمة والرقم",
+
+    school:
+      "🏫 مدرستي جميلة",
+
+    cooperation:
+      "🤝 أتعاون مع الآخرين",
+
+    environment:
+      "🌳 أحافظ على بيئتي",
+
+    parents:
+      "❤️ بر الوالدين",
+
+    goodBehavior:
+      "🌟 السلوك الحسن",
+
+    cleanliness:
+      "🧼 النظافة"
+
+  };
+
+
+  document.getElementById(
+    "gameTitle"
+  ).textContent =
+    titles[type];
+
+
+  nextQuestion();
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* ================================
+   أدوات عامة
+================================ */
+
+function random(min,max) {
+
+  return Math.floor(
+    Math.random() *
+    (max-min+1)
+  ) + min;
+
+}
+
+
+function shuffle(array) {
+
+  const copy = [...array];
+
+  for (
+    let i=copy.length-1;
+    i>0;
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random()*(i+1)
       );
 
+    [
+      copy[i],
+      copy[j]
+    ] =
+    [
+      copy[j],
+      copy[i]
+    ];
 
-    const studentName =
-      document.getElementById(
-        "studentName"
-      );
+  }
+
+  return copy;
+
+}
 
 
-    const savedName =
-      localStorage.getItem(
-        "grade1MathName"
-      );
+function createOptions(
+  correct,
+  min,
+  max
+) {
+
+  const options = [
+    correct
+  ];
 
 
-    if (savedName) {
+  while (
+    options.length < 4
+  ) {
 
-      studentName.value =
-        savedName;
+    const value =
+      random(min,max);
+
+    if (
+      !options.includes(value)
+    ) {
+
+      options.push(value);
 
     }
 
+  }
 
-    studentName.addEventListener(
-      "input",
-      function() {
 
-        localStorage.setItem(
-          "grade1MathName",
-          this.value
-        );
+  return shuffle(options);
 
-      }
+}
+
+
+function answerButtons(
+  options
+) {
+
+  return options.map(
+    function(value) {
+
+      return `
+        <button
+          class="answer"
+          onclick="checkAnswer('${value}')"
+        >
+          ${value}
+        </button>
+      `;
+
+    }
+  ).join("");
+
+}
+
+
+/* ================================
+   السؤال التالي
+================================ */
+
+function nextQuestion() {
+
+  if (
+    question >=
+    totalQuestions
+  ) {
+
+    finishGame();
+
+    return;
+
+  }
+
+
+  question++;
+
+  answered = false;
+
+  correctAnswer = null;
+
+  correctText = "";
+
+
+  document.getElementById(
+    "questionNumber"
+  ).textContent =
+    ar(question);
+
+
+  document.getElementById(
+    "questionTotal"
+  ).textContent =
+    ar(totalQuestions);
+
+
+  document.getElementById(
+    "feedback"
+  ).innerHTML =
+    "";
+
+
+  document.getElementById(
+    "nextButton"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "progressBar"
+  ).style.width =
+    (
+      ((question-1) /
+      totalQuestions) *
+      100
+    ) + "%";
+
+
+  switch(gameType) {
+
+    case "add":
+      additionQuestion();
+      break;
+
+    case "sub":
+      subtractionQuestion();
+      break;
+
+    case "count":
+      countingQuestion();
+      break;
+
+    case "numbers":
+      numberQuestion();
+      break;
+
+    case "compare":
+      comparisonQuestion();
+      break;
+
+    case "arabicNumber":
+      arabicNumberQuestion();
+      break;
+
+    case "listenNumber":
+      listenNumberQuestion();
+      break;
+
+    case "wordNumber":
+      wordNumberQuestion();
+      break;
+
+    case "school":
+      citizenshipQuestion("school");
+      break;
+
+    case "cooperation":
+      citizenshipQuestion("cooperation");
+      break;
+
+    case "environment":
+      citizenshipQuestion("environment");
+      break;
+
+    case "parents":
+      islamicQuestion("parents");
+      break;
+
+    case "goodBehavior":
+      islamicQuestion("goodBehavior");
+      break;
+
+    case "cleanliness":
+      islamicQuestion("cleanliness");
+      break;
+
+  }
+
+}
+
+
+/* ================================
+   الرياضيات
+================================ */
+
+function additionQuestion() {
+
+  const a=random(0,5);
+
+  const b=random(0,5-a);
+
+  correctAnswer=a+b;
+
+  const options=
+    createOptions(
+      correctAnswer,
+      0,
+      5
     );
 
 
-    updateStars();
+  document.getElementById(
+    "gameContent"
+  ).innerHTML=`
+
+    <div class="question-box">
+
+      <div class="hint">
+        اجمع العددين واختر الإجابة الصحيحة
+      </div>
+
+      <button
+        class="sound-button"
+        onclick="readQuestion()"
+      >
+        🔊
+      </button>
+
+      <div class="question">
+        ${ar(a)} + ${ar(b)} = ؟
+      </div>
+
+      <div class="answers">
+        ${answerButtons(
+          options.map(ar)
+        )}
+      </div>
+
+    </div>
+
+  `;
+
+}
 
 
-    function updateStars() {
+function subtractionQuestion() {
 
-      document.getElementById(
-        "stars"
-      ).textContent =
-        ar(stars);
+  const a=random(0,5);
 
+  const b=random(0,a);
+
+  correctAnswer=a-b;
+
+  const options=
+    createOptions(
+      correctAnswer,
+      0,
+      5
+    );
+
+
+  document.getElementById(
+    "gameContent"
+  ).innerHTML=`
+
+    <div class="question-box">
+
+      <div class="hint">
+        اطرح واختر الإجابة الصحيحة
+      </div>
+
+      <button
+        class="sound-button"
+        onclick="readQuestion()"
+      >
+        🔊
+      </button>
+
+      <div class="question">
+        ${ar(a)} − ${ar(b)} = ؟
+      </div>
+
+      <div class="answers">
+        ${answerButtons(
+          options.map(ar)
+        )}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function countingQuestion() {
+
+  const amount=random(1,9);
+
+  correctAnswer=amount;
+
+  const fruits=[
+    "🍎","🍊","🍓","🍌"
+  ];
+
+  const fruit=
+    fruits[
+      random(0,fruits.length-1)
+    ];
+
+
+  let items="";
+
+
+  for(
+    let i=0;
+    i<amount;
+    i++
+  ) {
+
+    items+=
+      `<span>${fruit}</span>`;
+
+  }
+
+
+  const options=
+    createOptions(
+      amount,
+      1,
+      9
+    ).map(ar);
+
+
+  document.getElementById(
+    "gameContent"
+  ).innerHTML=`
+
+    <div class="question-box">
+
+      <div class="hint">
+        عد الأشياء واختر العدد الصحيح
+      </div>
+
+      <div class="count-items">
+        ${items}
+      </div>
+
+      <div class="answers">
+        ${answerButtons(options)}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function numberQuestion() {
+
+  const number=random(1,9);
+
+  correctAnswer=number;
+
+  const options=
+    createOptions(
+      number,
+      1,
+      9
+    ).map(ar);
+
+
+  document.getElementById(
+    "gameContent"
+  ).innerHTML=`
+
+    <div class="question-box">
+
+      <div class="hint">
+        اختر العدد الذي تراه
+      </div>
+
+      <div class="question">
+        ${ar(number)}
+      </div>
+
+      <div class="answers">
+        ${answerButtons(options)}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function comparisonQuestion() {
+
+  let a=random(1,9);
+
+  let b=random(1,9);
+
+
+  while(a===b) {
+    b=random(1,9);
+  }
+
+
+  correctAnswer =
+    a>b ? ">" : "<";
+
+
+  correctText =
+    correctAnswer;
+
+
+  document.getElementById(
+    "gameContent"
+  ).innerHTML=`
+
+    <div class="question-box">
+
+      <div class="hint">
+        اختر علامة المقارنة الصحيحة
+      </div>
+
+      <div class="question">
+        ${ar(a)} ؟ ${ar(b)}
+      </div>
+
+      <div class="answers">
+
+        <button
+          class="answer"
+          onclick="checkAnswer('>')"
+        >
+          أكبر &gt;
+        </button>
+
+        <button
+          class="answer"
+          onclick="checkAnswer('<')"
+        >
+          أصغر &lt;
+        </button>
+
+        <button
+          class="answer"
+          onclick="checkAnswer('=')"
+        >
+          يساوي =
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ================================
+   اللغة العربية
+================================ */
+
+const numberWords = {
+
+  1:"واحد",
+  2:"اثنان",
+  3:"ثلاثة",
+  4:"أربعة",
+  5:"خمسة",
+  6:"ستة",
+  7:"سبعة",
+  8:"ثمانية",
+  9:"تسعة"
+
+};
+
+
+function arabicNumberQuestion() {
+
+  const number=random(1,9);
+
+  correctAnswer=
+    numberWords[number];
+
+
+  const choices=
+    shuffle(
+      [
+        correctAnswer,
+        numberWords[
+          randomOther(number)
+        ],
+        numberWords[
+          randomOther(number)
+        ],
+        numberWords[
+          randomOther(number)
+        ]
+      ]
+    );
+
+
+  document.getElementById(
+    "gameContent"
+  ).innerHTML=`
+
+    <div class="question-box">
+
+      <div class="hint">
+        ما اسم هذا العدد؟
+      </div>
+
+      <div class="question">
+        ${ar(number)}
+      </div>
+
+      <div class="answers">
+        ${answerButtons(choices)}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function listenNumberQuestion() {
+
+  const number=random(1,9);
+
+  correctAnswer=number;
+
+  correctText=
+    numberWords[number];
+
+
+  const options=
+    createOptions(
+      number,
+      1,
+      9
+    ).map(ar);
+
+
+  document.getElementById(
+    "gameContent"
+  ).innerHTML=`
+
+    <div class="question-box">
+
+      <div class="hint">
+        اضغط 🔊 واستمع ثم اختر الرقم
+      </div>
+
+      <button
+        class="sound-button"
+        onclick="speak('${correctText}')"
+      >
+        🔊
+      </button>
+
+      <div class="question text-question">
+        استمع واختر العدد
+      </div>
+
+      <div class="answers">
+        ${answerButtons(options)}
+      </div>
+
+    </div>
+
+  `;
+
+
+  setTimeout(
+    function() {
+      speak(correctText);
+    },
+    400
+  );
+
+}
+
+
+function wordNumberQuestion() {
+
+  const number=random(1,9);
+
+  correctAnswer=number;
+
+  correctText=
+    numberWords[number];
+
+
+  const options=
+    createOptions(
+      number,
+      1,
+      9
+    ).map(ar);
+
+
+  document.getElementById(
+    "gameContent"
+  ).innerHTML=`
+
+    <div class="question-box">
+
+      <div class="hint">
+        ما الرقم الذي يناسب الكلمة؟
+      </div>
+
+      <div class="question text-question">
+        ${correctText}
+      </div>
+
+      <div class="answers">
+        ${answerButtons(options)}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function randomOther(number) {
+
+  let value=random(1,9);
+
+  while(value===number) {
+    value=random(1,9);
+  }
+
+  return value;
+
+}
+
+
+/* ================================
+   المواطنة الصالحة
+================================ */
+
+const citizenshipQuestions = {
+
+  school: [
+
+    {
+      q:"أين نضع النفايات؟",
+      options:[
+        "في سلة المهملات",
+        "على الأرض",
+        "في الملعب"
+      ],
+      answer:"في سلة المهملات"
+    },
+
+    {
+      q:"ماذا نفعل عندما ينتهي الدرس؟",
+      options:[
+        "نحافظ على ترتيب الصف",
+        "نرمي الكتب",
+        "نترك الصف متسخًا"
+      ],
+      answer:"نحافظ على ترتيب الصف"
+    },
+
+    {
+      q:"كيف نحافظ على مدرستنا؟",
+      options:[
+        "نحافظ على نظافتها",
+        "نكسر الأشياء",
+        "نكتب على الجدران"
+      ],
+      answer:"نحافظ على نظافتها"
     }
 
+  ],
 
-    function addStar() {
+  cooperation: [
 
-      stars++;
+    {
+      q:"ماذا نفعل عندما يحتاج زميلنا إلى مساعدة؟",
+      options:[
+        "نساعده",
+        "نتركه",
+        "نسخر منه"
+      ],
+      answer:"نساعده"
+    },
 
-      localStorage.setItem(
-        "grade1MathStars",
-        String(stars)
+    {
+      q:"كيف نتعامل مع زملائنا؟",
+      options:[
+        "باحترام",
+        "بالأذى",
+        "بالسخرية"
+      ],
+      answer:"باحترام"
+    },
+
+    {
+      q:"ماذا يعني التعاون؟",
+      options:[
+        "أن نساعد بعضنا",
+        "أن نؤذي بعضنا",
+        "أن نرفض المساعدة"
+      ],
+      answer:"أن نساعد بعضنا"
+    }
+
+  ],
+
+  environment: [
+
+    {
+      q:"كيف نحافظ على البيئة؟",
+      options:[
+        "نحافظ على نظافتها",
+        "نرمي النفايات",
+        "نؤذي الأشجار"
+      ],
+      answer:"نحافظ على نظافتها"
+    },
+
+    {
+      q:"ماذا نفعل مع النفايات؟",
+      options:[
+        "نضعها في مكانها",
+        "نرميها في الشارع",
+        "نتركها في الصف"
+      ],
+      answer:"نضعها في مكانها"
+    },
+
+    {
+      q:"كيف نحافظ على الأشجار؟",
+      options:[
+        "لا نؤذيها",
+        "نكسر أغصانها",
+        "نرمي عليها النفايات"
+      ],
+      answer:"لا نؤذيها"
+    }
+
+  ]
+
+};
+
+
+function citizenshipQuestion(type) {
+
+  const list=
+    citizenshipQuestions[type];
+
+
+  const item=
+    list[
+      random(0,list.length-1)
+    ];
+
+
+  correctAnswer=
+    item.answer;
+
+
+  const options=
+    shuffle(item.options);
+
+
+  document.getElementById(
+    "gameContent"
+  ).innerHTML=`
+
+    <div class="question-box">
+
+      <div class="hint">
+        🌱 اختر السلوك الصحيح
+      </div>
+
+      <button
+        class="sound-button"
+        onclick="speak('${item.q}')"
+      >
+        🔊
+      </button>
+
+      <div class="question text-question">
+        ${item.q}
+      </div>
+
+      <div class="answers">
+        ${answerButtons(options)}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ================================
+   التربية الإسلامية
+================================ */
+
+const islamicQuestions = {
+
+  parents: [
+
+    {
+      q:"كيف نعامل الوالدين؟",
+      options:[
+        "باحترام وطاعة في الخير",
+        "بالصراخ",
+        "بالإهمال"
+      ],
+      answer:"باحترام وطاعة في الخير"
+    },
+
+    {
+      q:"ماذا نفعل عندما يحتاج أحد الوالدين إلى مساعدة؟",
+      options:[
+        "نساعده",
+        "نتجاهله",
+        "نغضب منه"
+      ],
+      answer:"نساعده"
+    },
+
+    {
+      q:"أي سلوك جميل مع الوالدين؟",
+      options:[
+        "الكلام الطيب",
+        "الصراخ",
+        "الإيذاء"
+      ],
+      answer:"الكلام الطيب"
+    }
+
+  ],
+
+  goodBehavior: [
+
+    {
+      q:"أي سلوك يدل على الأمانة؟",
+      options:[
+        "أعيد الشيء لصاحبه",
+        "آخذ ما ليس لي",
+        "أخفي الأشياء"
+      ],
+      answer:"أعيد الشيء لصاحبه"
+    },
+
+    {
+      q:"ماذا نفعل عندما نخطئ؟",
+      options:[
+        "نعترف بالخطأ ونعتذر",
+        "نكذب",
+        "نلوم الآخرين"
+      ],
+      answer:"نعترف بالخطأ ونعتذر"
+    },
+
+    {
+      q:"أي سلوك حسن؟",
+      options:[
+        "أساعد الآخرين",
+        "أؤذي الآخرين",
+        "أسخر من الآخرين"
+      ],
+      answer:"أساعد الآخرين"
+    }
+
+  ],
+
+  cleanliness: [
+
+    {
+      q:"ماذا نفعل قبل الطعام؟",
+      options:[
+        "نغسل أيدينا",
+        "نترك أيدينا متسخة",
+        "نرمي الطعام"
+      ],
+      answer:"نغسل أيدينا"
+    },
+
+    {
+      q:"كيف نحافظ على نظافتنا؟",
+      options:[
+        "نحافظ على أجسامنا وملابسنا",
+        "نهمل النظافة",
+        "نرمي النفايات حولنا"
+      ],
+      answer:"نحافظ على أجسامنا وملابسنا"
+    },
+
+    {
+      q:"أين نضع النفايات؟",
+      options:[
+        "في سلة المهملات",
+        "على الأرض",
+        "في الطريق"
+      ],
+      answer:"في سلة المهملات"
+    }
+
+  ]
+
+};
+
+
+function islamicQuestion(type) {
+
+  const list=
+    islamicQuestions[type];
+
+
+  const item=
+    list[
+      random(0,list.length-1)
+    ];
+
+
+  correctAnswer=
+    item.answer;
+
+
+  const options=
+    shuffle(item.options);
+
+
+  document.getElementById(
+    "gameContent"
+  ).innerHTML=`
+
+    <div class="question-box">
+
+      <div class="hint">
+        🕌 اختر السلوك الصحيح
+      </div>
+
+      <button
+        class="sound-button"
+        onclick="speak('${item.q}')"
+      >
+        🔊
+      </button>
+
+      <div class="question text-question">
+        ${item.q}
+      </div>
+
+      <div class="answers">
+        ${answerButtons(options)}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ================================
+   فحص الإجابة
+================================ */
+
+function checkAnswer(answer) {
+
+  if(answered) {
+    return;
+  }
+
+
+  answered=true;
+
+
+  const buttons=
+    document.querySelectorAll(
+      ".answer"
+    );
+
+
+  buttons.forEach(
+    function(button) {
+
+      button.disabled=true;
+
+      const text=
+        button.textContent.trim();
+
+
+      if(
+        text ===
+        String(correctAnswer)
+      ) {
+
+        button.classList.add(
+          "correct"
+        );
+
+      }
+
+    }
+  );
+
+
+  const isCorrect=
+    String(answer) ===
+    String(correctAnswer);
+
+
+  if(isCorrect) {
+
+    score++;
+
+    addStar();
+
+    showFeedback(
+      "🎉 أحسنت! إجابة صحيحة!",
+      true
+    );
+
+    correctSound();
+
+    celebration();
+
+  } else {
+
+    showFeedback(
+      "💡 حاول مرة أخرى! الإجابة الصحيحة هي: " +
+      correctAnswer,
+      false
+    );
+
+    wrongSound();
+
+  }
+
+
+  document.getElementById(
+    "nextButton"
+  ).classList.remove(
+    "hidden"
+  );
+
+}
+
+
+function showFeedback(
+  text,
+  good
+) {
+
+  const feedback=
+    document.getElementById(
+      "feedback"
+    );
+
+
+  feedback.textContent=text;
+
+  feedback.className=
+    good
+      ? "feedback good"
+      : "feedback bad";
+
+}
+
+
+/* ================================
+   الأصوات
+================================ */
+
+let audioContext=null;
+
+
+function getAudioContext() {
+
+  if(!audioContext) {
+
+    audioContext=
+      new(
+        window.AudioContext ||
+        window.webkitAudioContext
+      )();
+
+  }
+
+  return audioContext;
+
+}
+
+
+function playTone(
+  frequency,
+  duration,
+  delay=0
+) {
+
+  try {
+
+    const ctx=
+      getAudioContext();
+
+
+    const oscillator=
+      ctx.createOscillator();
+
+
+    const gain=
+      ctx.createGain();
+
+
+    oscillator.type="sine";
+
+    oscillator.frequency.value=
+      frequency;
+
+
+    oscillator.connect(gain);
+
+    gain.connect(
+      ctx.destination
+    );
+
+
+    const now=
+      ctx.currentTime+
+      delay;
+
+
+    gain.gain.setValueAtTime(
+      .001,
+      now
+    );
+
+
+    gain.gain.exponentialRampToValueAtTime(
+      .18,
+      now+.02
+    );
+
+
+    gain.gain.exponentialRampToValueAtTime(
+      .001,
+      now+duration
+    );
+
+
+    oscillator.start(now);
+
+    oscillator.stop(
+      now+duration
+    );
+
+  } catch(e) {}
+
+}
+
+
+function correctSound() {
+
+  playTone(
+    523.25,
+    .15,
+    0
+  );
+
+  playTone(
+    659.25,
+    .15,
+    .12
+  );
+
+  playTone(
+    783.99,
+    .22,
+    .24
+  );
+
+}
+
+
+function wrongSound() {
+
+  playTone(
+    220,
+    .18,
+    0
+  );
+
+  playTone(
+    180,
+    .25,
+    .15
+  );
+
+}
+
+
+function speak(text) {
+
+  if(
+    !("speechSynthesis" in window)
+  ) {
+    return;
+  }
+
+
+  try {
+
+    window.speechSynthesis.cancel();
+
+
+    const speech=
+      new SpeechSynthesisUtterance(
+        text
       );
 
-      updateStars();
 
-    }
+    speech.lang="ar-SA";
 
+    speech.rate=.8;
 
-    function getName() {
-
-      return (
-        studentName.value.trim()
-        ||
-        "بطل الرياضيات"
-      );
-
-    }
+    speech.pitch=1.1;
 
 
-    function startGame(type) {
+    window.speechSynthesis.speak(
+      speech
+    );
 
-      gameType = type;
+  } catch(e) {}
 
-      question = 0;
-
-      score = 0;
-
-      answered = false;
-
-      document.getElementById(
-        "menu"
-      ).style.display =
-        "none";
+}
 
 
-      document.getElementById(
-        "resultScreen"
-      ).classList.remove(
-        "active"
-      );
+function readQuestion() {
+
+  const messages={
+
+    add:
+      "احسب عملية الجمع واختر الإجابة الصحيحة",
+
+    sub:
+      "احسب عملية الطرح واختر الإجابة الصحيحة",
+
+    count:
+      "عد الأشياء واختر العدد الصحيح",
+
+    numbers:
+      "اختر العدد الصحيح",
+
+    compare:
+      "قارن بين العددين واختر العلامة الصحيحة"
+
+  };
 
 
-      document.getElementById(
-        "gameScreen"
-      ).classList.add(
-        "active"
-      );
+  speak(
+    messages[gameType] ||
+    "استمع إلى السؤال واختر الإجابة الصحيحة"
+  );
+
+}
 
 
-      const titles = {
+/* ================================
+   الاحتفال
+================================ */
 
-        add:
-          "➕ لعبة الجمع ضمن ٥",
+function celebration() {
 
-        sub:
-          "➖ لعبة الطرح ضمن ٥",
-
-        count:
-          "🍎 لعبة عدّ الأشياء",
-
-        numbers:
-          "🔢 الأعداد من ١ إلى ٩",
-
-        compare:
-          "⚖️ أكبر أم أصغر؟",
-
-        sequence:
-          "🧩 أكمل العدد"
-
-      };
+  const area=
+    document.getElementById(
+      "celebrate"
+    );
 
 
-      document.getElementById(
-        "gameTitle"
-      ).textContent =
-        titles[type];
+  const symbols=[
+    "⭐",
+    "🎉",
+    "✨",
+    "🌟",
+    "🎈",
+    "👏"
+  ];
 
 
-      nextQuestion();
+  for(
+    let i=0;
+    i<15;
+    i++
+  ) {
 
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-
-    }
-
-
-    function nextQuestion() {
-
-      if (
-        question >=
-        totalQuestions
-      ) {
-
-        finishGame();
-
-        return;
-
-      }
-
-
-      question++;
-
-      answered = false;
-
-      correctAnswer = null;
-
-
-      document.getElementById(
-        "questionNumber"
-      ).textContent =
-        ar(question);
-
-
-      document.getElementById(
-        "questionTotal"
-      ).textContent =
-        ar(totalQuestions);
-
-
-      document.getElementById(
-        "feedback"
-      ).innerHTML =
-        "";
-
-
-      document.getElementById(
-        "nextButton"
-      ).classList.add(
-        "hidden"
+    const item=
+      document.createElement(
+        "div"
       );
 
 
-      document.getElementById(
-        "progressBar"
-      ).style.width =
-        (
-          ((question - 1) /
-          totalQuestions) *
-          100
-        ) + "%";
+    item.className=
+      "confetti";
 
 
-      if (gameType === "add") {
-
-        additionQuestion();
-
-      }
-
-      else if (
-        gameType === "sub"
-      ) {
-
-        subtractionQuestion();
-
-      }
-
-      else if (
-        gameType === "count"
-      ) {
-
-        countingQuestion();
-
-      }
-
-      else if (
-        gameType === "numbers"
-      ) {
-
-        numberQuestion();
-
-      }
-
-      else if (
-        gameType === "compare"
-      ) {
-
-        comparisonQuestion();
-
-      }
-
-      else if (
-        gameType === "sequence"
-      ) {
-
-        sequenceQuestion();
-
-      }
-
-    }
-
-
-    function createOptions(
-      correct,
-      min,
-      max
-    ) {
-
-      const options = [
-        correct
-      ];
-
-
-      while (
-        options.length < 4
-      ) {
-
-        const value =
-          random(
-            min,
-            max
-          );
-
-
-        if (
-          !options.includes(
-            value
-          )
-        ) {
-
-          options.push(
-            value
-          );
-
-        }
-
-      }
-
-
-      return shuffle(
-        options
-      );
-
-    }
-
-
-    function answerButtons(
-      options
-    ) {
-
-      return options
-        .map(function(value) {
-
-          return `
-            <button
-              class="answer"
-              onclick="checkAnswer(${value})"
-            >
-              ${ar(value)}
-            </button>
-          `;
-
-        })
-        .join("");
-
-    }
-
-
-    function additionQuestion() {
-
-      const a =
-        random(0, 5);
-
-      const b =
+    item.textContent=
+      symbols[
         random(
           0,
-          5 - a
-        );
-
-
-      correctAnswer =
-        a + b;
-
-
-      const options =
-        createOptions(
-          correctAnswer,
-          0,
-          5
-        );
-
-
-      document.getElementById(
-        "gameContent"
-      ).innerHTML = `
-
-        <div class="question-box">
-
-          <div class="hint">
-            اجمع العددين واختر الإجابة الصحيحة
-          </div>
-
-          <button
-            class="sound-button"
-            onclick="readQuestion()"
-            title="اسمع السؤال"
-          >
-            🔊
-          </button>
-
-          <div class="question">
-            ${ar(a)}
-            +
-            ${ar(b)}
-            =
-            ؟
-          </div>
-
-          <div class="answers">
-            ${answerButtons(options)}
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    function subtractionQuestion() {
-
-      const a =
-        random(0, 5);
-
-      const b =
-        random(0, a);
-
-
-      correctAnswer =
-        a - b;
-
-
-      const options =
-        createOptions(
-          correctAnswer,
-          0,
-          5
-        );
-
-
-      document.getElementById(
-        "gameContent"
-      ).innerHTML = `
-
-        <div class="question-box">
-
-          <div class="hint">
-            اطرح واختر الإجابة الصحيحة
-          </div>
-
-          <button
-            class="sound-button"
-            onclick="readQuestion()"
-          >
-            🔊
-          </button>
-
-          <div class="question">
-            ${ar(a)}
-            −
-            ${ar(b)}
-            =
-            ؟
-          </div>
-
-          <div class="answers">
-            ${answerButtons(options)}
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    function countingQuestion() {
-
-      const amount =
-        random(1, 9);
-
-
-      correctAnswer =
-        amount;
-
-
-      const fruits = [
-        "🍎",
-        "🍊",
-        "🍓",
-        "🍌"
+          symbols.length-1
+        )
       ];
 
 
-      const fruit =
-        fruits[
-          random(
-            0,
-            fruits.length - 1
-          )
-        ];
+    item.style.left=
+      random(5,95)+"%";
 
 
-      let items = "";
+    item.style.animationDelay=
+      (
+        Math.random()*.5
+      )+"s";
 
 
-      for (
-        let i = 0;
-        i < amount;
-        i++
-      ) {
+    area.appendChild(item);
 
-        items += `
-          <span>
-            ${fruit}
-          </span>
-        `;
 
-      }
-
-
-      const options =
-        createOptions(
-          amount,
-          1,
-          9
-        );
-
-
-      document.getElementById(
-        "gameContent"
-      ).innerHTML = `
-
-        <div class="question-box">
-
-          <div class="hint">
-            عدّ الأشياء جيدًا ثم اختر العدد الصحيح
-          </div>
-
-          <button
-            class="sound-button"
-            onclick="readQuestion()"
-          >
-            🔊
-          </button>
-
-          <div class="count-items">
-            ${items}
-          </div>
-
-          <div class="answers">
-            ${answerButtons(options)}
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    function numberQuestion() {
-
-      const number =
-        random(1, 9);
-
-
-      correctAnswer =
-        number;
-
-
-      const options =
-        createOptions(
-          number,
-          1,
-          9
-        );
-
-
-      document.getElementById(
-        "gameContent"
-      ).innerHTML = `
-
-        <div class="question-box">
-
-          <div class="hint">
-            اختر العدد الذي تراه
-          </div>
-
-          <button
-            class="sound-button"
-            onclick="readQuestion()"
-          >
-            🔊
-          </button>
-
-          <div class="question">
-            ${ar(number)}
-          </div>
-
-          <div class="answers">
-            ${answerButtons(options)}
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    function comparisonQuestion() {
-
-      let a =
-        random(1, 9);
-
-      let b =
-        random(1, 9);
-
-
-      while (
-        a === b
-      ) {
-
-        b =
-          random(1, 9);
-
-      }
-
-
-      if (a > b) {
-
-        correctAnswer =
-          ">";
-
-      }
-
-      else {
-
-        correctAnswer =
-          "<";
-
-      }
-
-
-      document.getElementById(
-        "gameContent"
-      ).innerHTML = `
-
-        <div class="question-box">
-
-          <div class="hint">
-            أي علامة صحيحة؟
-          </div>
-
-          <button
-            class="sound-button"
-            onclick="readQuestion()"
-          >
-            🔊
-          </button>
-
-          <div class="question">
-            ${ar(a)}
-            ؟
-            ${ar(b)}
-          </div>
-
-          <div class="answers">
-
-            <button
-              class="answer"
-              onclick="checkAnswer('>')"
-            >
-              >
-            </button>
-
-            <button
-              class="answer"
-              onclick="checkAnswer('<')"
-            >
-              <
-            </button>
-
-            <button
-              class="answer"
-              onclick="checkAnswer('=')"
-            >
-              =
-            </button>
-
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    function sequenceQuestion() {
-
-      const start =
-        random(1, 5);
-
-
-      const step =
-        random(1, 2);
-
-
-      const numbers = [
-        start,
-        start + step,
-        start + step * 2
-      ];
-
-
-      correctAnswer =
-        start + step * 3;
-
-
-      if (
-        correctAnswer > 9
-      ) {
-
-        sequenceQuestion();
-
-        return;
-
-      }
-
-
-      const options =
-        createOptions(
-          correctAnswer,
-          1,
-          9
-        );
-
-
-      document.getElementById(
-        "gameContent"
-      ).innerHTML = `
-
-        <div class="question-box">
-
-          <div class="hint">
-            أكمل التسلسل
-          </div>
-
-          <button
-            class="sound-button"
-            onclick="readQuestion()"
-          >
-            🔊
-          </button>
-
-          <div class="question">
-            ${ar(numbers[0])}
-            ،
-            ${ar(numbers[1])}
-            ،
-            ${ar(numbers[2])}
-            ،
-            ؟
-          </div>
-
-          <div class="answers">
-            ${answerButtons(options)}
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    function checkAnswer(answer) {
-
-      if (
-        answered
-      ) {
-
-        return;
-
-      }
-
-
-      answered = true;
-
-
-      const buttons =
-        document.querySelectorAll(
-          ".answer"
-        );
-
-
-      buttons.forEach(
-        function(button) {
-
-          button.disabled =
-            true;
-
-          const value =
-            button.textContent.trim();
-
-
-          if (
-            value ===
-            ar(correctAnswer)
-          ) {
-
-            button.classList.add(
-              "correct"
-            );
-
-          }
-
-        }
-      );
-
-
-      const isCorrect =
-        String(answer) ===
-        String(correctAnswer);
-
-
-      if (isCorrect) {
-
-        score++;
-
-        addStar();
-
-        showFeedback(
-          "🎉 أحسنت! إجابة صحيحة!",
-          true
-        );
-
-        correctSound();
-
-        celebration();
-
-      }
-
-      else {
-
-        showFeedback(
-          "💡 حاول مرة أخرى! الإجابة الصحيحة هي " +
-          ar(correctAnswer),
-          false
-        );
-
-        wrongSound();
-
-      }
-
-
-      document.getElementById(
-        "nextButton"
-      ).classList.remove(
-        "hidden"
-      );
-
-    }
-
-
-    function showFeedback(
-      text,
-      good
-    ) {
-
-      const feedback =
-        document.getElementById(
-          "feedback"
-        );
-
-
-      feedback.textContent =
-        text;
-
-
-      feedback.className =
-        good
-          ? "feedback good"
-          : "feedback bad";
-
-    }
-
-
-    function finishGame() {
-
-      document.getElementById(
-        "gameScreen"
-      ).classList.remove(
-        "active"
-      );
-
-
-      document.getElementById(
-        "resultScreen"
-      ).classList.add(
-        "active"
-      );
-
-
-      document.getElementById(
-        "score"
-      ).textContent =
-        ar(score);
-
-
-      document.getElementById(
-        "total"
-      ).textContent =
-        ar(totalQuestions);
-
-
-      document.getElementById(
-        "certificateName"
-      ).textContent =
-        getName();
-
-
-      const percentage =
-        score /
-        totalQuestions *
-        100;
-
-
-      let emoji =
-        "💪";
-
-
-      let title =
-        "أحسنت يا بطل!";
-
-
-      let message =
-        "استمر في التدريب، فأنت تستطيع أن تصبح أفضل.";
-
-
-      if (
-        percentage >= 90
-      ) {
-
-        emoji =
-          "🏆";
-
-        title =
-          "رائع جدًا!";
-
-        message =
-          "أنت بطل حقيقي في الرياضيات!";
-
-      }
-
-      else if (
-        percentage >= 70
-      ) {
-
-        emoji =
-          "🌟";
-
-        title =
-          "ممتاز!";
-
-        message =
-          "نتيجة جميلة جدًا، استمر!";
-
-      }
-
-      else if (
-        percentage >= 50
-      ) {
-
-        emoji =
-          "😊";
-
-        title =
-          "جيد جدًا!";
-
-        message =
-          "أنت تتعلم بسرعة، واصل التدريب!";
-
-      }
-
-
-      document.getElementById(
-        "resultEmoji"
-      ).textContent =
-        emoji;
-
-
-      document.getElementById(
-        "resultTitle"
-      ).textContent =
-        getName() +
-        "، " +
-        title;
-
-
-      document.getElementById(
-        "resultMessage"
-      ).textContent =
-        message;
-
-
-      const starCount =
-        Math.max(
-          1,
-          Math.round(
-            percentage / 20
-          )
-        );
-
-
-      document.getElementById(
-        "resultStars"
-      ).textContent =
-        "⭐".repeat(
-          starCount
-        );
-
-
-      document.getElementById(
-        "progressBar"
-      ).style.width =
-        "100%";
-
-
-      if (
-        percentage >= 70
-      ) {
-
-        celebration();
-
-      }
-
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-
-    }
-
-
-    function restartGame() {
-
-      startGame(
-        gameType
-      );
-
-    }
-
-
-    function backToMenu() {
-
-      document.getElementById(
-        "gameScreen"
-      ).classList.remove(
-        "active"
-      );
-
-
-      document.getElementById(
-        "resultScreen"
-      ).classList.remove(
-        "active"
-      );
-
-
-      document.getElementById(
-        "menu"
-      ).style.display =
-        "block";
-
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-
-    }
-
-
-    /*
-      ==========================================
-      الأصوات
-      ==========================================
-    */
-
-    let audioContext = null;
-
-
-    function getAudioContext() {
-
-      if (!audioContext) {
-
-        audioContext =
-          new (
-            window.AudioContext ||
-            window.webkitAudioContext
-          )();
-
-      }
-
-      return audioContext;
-
-    }
-
-
-    function playTone(
-      frequency,
-      duration,
-      delay = 0
-    ) {
-
-      try {
-
-        const ctx =
-          getAudioContext();
-
-
-        const oscillator =
-          ctx.createOscillator();
-
-
-        const gain =
-          ctx.createGain();
-
-
-        oscillator.type =
-          "sine";
-
-
-        oscillator.frequency.value =
-          frequency;
-
-
-        oscillator.connect(
-          gain
-        );
-
-
-        gain.connect(
-          ctx.destination
-        );
-
-
-        const now =
-          ctx.currentTime +
-          delay;
-
-
-        gain.gain.setValueAtTime(
-          0.001,
-          now
-        );
-
-
-        gain.gain.exponentialRampToValueAtTime(
-          0.18,
-          now + 0.02
-        );
-
-
-        gain.gain.exponentialRampToValueAtTime(
-          0.001,
-          now + duration
-        );
-
-
-        oscillator.start(
-          now
-        );
-
-
-        oscillator.stop(
-          now + duration
-        );
-
-      }
-
-      catch (error) {
-
-        console.log(
-          "الصوت غير متاح في هذا المتصفح."
-        );
-
-      }
-
-    }
-
-
-    function correctSound() {
-
-      playTone(
-        523.25,
-        0.15,
-        0
-      );
-
-
-      playTone(
-        659.25,
-        0.15,
-        0.12
-      );
-
-
-      playTone(
-        783.99,
-        0.22,
-        0.24
-      );
-
-    }
-
-
-    function wrongSound() {
-
-      playTone(
-        220,
-        0.18,
-        0
-      );
-
-
-      playTone(
-        180,
-        0.25,
-        0.15
-      );
-
-    }
-
-
-    /*
-      ==========================================
-      قراءة السؤال بصوت عربي
-      ==========================================
-    */
-
-    function readQuestion() {
-
-      if (
-        !("speechSynthesis" in window)
-      ) {
-
-        return;
-
-      }
-
-
-      let text =
-        "";
-
-
-      if (
-        gameType === "add"
-      ) {
-
-        text =
-          "احسب عملية الجمع واختر الإجابة الصحيحة";
-
-      }
-
-      else if (
-        gameType === "sub"
-      ) {
-
-        text =
-          "احسب عملية الطرح واختر الإجابة الصحيحة";
-
-      }
-
-      else if (
-        gameType === "count"
-      ) {
-
-        text =
-          "عد الأشياء واختر العدد الصحيح";
-
-      }
-
-      else if (
-        gameType === "numbers"
-      ) {
-
-        text =
-          "اختر العدد الصحيح";
-
-      }
-
-      else if (
-        gameType === "compare"
-      ) {
-
-        text =
-          "قارن بين العددين واختر العلامة الصحيحة";
-
-      }
-
-      else if (
-        gameType === "sequence"
-      ) {
-
-        text =
-          "أكمل التسلسل واختر العدد الناقص";
-
-      }
-
-
-      try {
-
-        window.speechSynthesis.cancel();
-
-
-        const speech =
-          new SpeechSynthesisUtterance(
-            text
-          );
-
-
-        speech.lang =
-          "ar-SA";
-
-
-        speech.rate =
-          0.8;
-
-
-        speech.pitch =
-          1.1;
-
-
-        window.speechSynthesis.speak(
-          speech
-        );
-
-      }
-
-      catch (error) {
-
-        console.log(
-          "ميزة قراءة النص غير متاحة."
-        );
-
-      }
-
-    }
-
-
-    /*
-      ==========================================
-      احتفال عند الإجابة الصحيحة
-      ==========================================
-    */
-
-    function celebration() {
-
-      const area =
-        document.getElementById(
-          "celebrate"
-        );
-
-
-      const symbols = [
-        "⭐",
-        "🎉",
-        "✨",
-        "🌟",
-        "🎈"
-      ];
-
-
-      for (
-        let i = 0;
-        i < 12;
-        i++
-      ) {
-
-        const item =
-          document.createElement(
-            "div"
-          );
-
-
-        item.className =
-          "confetti";
-
-
-        item.textContent =
-          symbols[
-            random(
-              0,
-              symbols.length - 1
-            )
-          ];
-
-
-        item.style.left =
-          random(
-            5,
-            95
-          ) + "%";
-
-
-        item.style.animationDelay =
-          (
-            Math.random() *
-            0.5
-          ) + "s";
-
-
-        area.appendChild(
-          item
-        );
-
-
-        setTimeout(
-          function() {
-
-            item.remove();
-
-          },
-          2200
-        );
-
-      }
-
-    }
-
-
-    /*
-      ==========================================
-      حفظ اسم الطالب
-      ==========================================
-    */
-
-    window.addEventListener(
-      "beforeunload",
+    setTimeout(
       function() {
+        item.remove();
+      },
+      2200
+    );
 
-        localStorage.setItem(
-          "grade1MathName",
-          studentName.value
-        );
+  }
 
-        localStorage.setItem(
-          "grade1MathStars",
-          String(stars)
-        );
+}
 
-      }
+
+/* ================================
+   النتيجة
+================================ */
+
+function finishGame() {
+
+  document.getElementById(
+    "gameScreen"
+  ).classList.remove(
+    "active"
+  );
+
+
+  document.getElementById(
+    "resultScreen"
+  ).classList.add(
+    "active"
+  );
+
+
+  document.getElementById(
+    "score"
+  ).textContent=
+    ar(score);
+
+
+  document.getElementById(
+    "total"
+  ).textContent=
+    ar(totalQuestions);
+
+
+  document.getElementById(
+    "certificateName"
+  ).textContent=
+    getName();
+
+
+  const percentage=
+    score/
+    totalQuestions*
+    100;
+
+
+  let emoji="💪";
+
+  let title="أحسنت يا بطل!";
+
+  let message=
+    "استمر في التعلم والتدريب!";
+
+
+  if(
+    percentage>=90
+  ) {
+
+    emoji="🏆";
+
+    title="رائع جدًا!";
+
+    message=
+      "أنت بطل متميز! إجابات رائعة.";
+
+  }
+
+  else if(
+    percentage>=70
+  ) {
+
+    emoji="🌟";
+
+    title="ممتاز!";
+
+    message=
+      "نتيجة جميلة جدًا، استمر!";
+
+  }
+
+  else if(
+    percentage>=50
+  ) {
+
+    emoji="😊";
+
+    title="جيد جدًا!";
+
+    message=
+      "أنت تتقدم بشكل رائع.";
+
+  }
+
+
+  document.getElementById(
+    "resultEmoji"
+  ).textContent=emoji;
+
+
+  document.getElementById(
+    "resultTitle"
+  ).textContent=
+    getName()+
+    "، "+
+    title;
+
+
+  document.getElementById(
+    "resultMessage"
+  ).textContent=
+    message;
+
+
+  const starCount=
+    Math.max(
+      1,
+      Math.round(
+        percentage/20
+      )
     );
 
 
-    console.log(
-      "ألعاب الرياضيات للصف الأول جاهزة."
+  document.getElementById(
+    "resultStars"
+  ).textContent=
+    "⭐".repeat(
+      starCount
     );
 
-  </script>
+
+  document.getElementById(
+    "progressBar"
+  ).style.width=
+    "100%";
+
+
+  if(
+    percentage>=70
+  ) {
+
+    celebration();
+
+  }
+
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* ================================
+   إعادة اللعبة
+================================ */
+
+function restartGame() {
+
+  startGame(
+    gameType
+  );
+
+}
+
+
+function backToMenu() {
+
+  document.getElementById(
+    "gameScreen"
+  ).classList.remove(
+    "active"
+  );
+
+
+  document.getElementById(
+    "resultScreen"
+  ).classList.remove(
+    "active"
+  );
+
+
+  document.getElementById(
+    "menu"
+  ).style.display=
+    "block";
+
+
+  location.reload();
+
+}
+
+
+/* ================================
+   حفظ البيانات
+================================ */
+
+window.addEventListener(
+  "beforeunload",
+  function() {
+
+    localStorage.setItem(
+      "grade1MathName",
+      studentName.value
+    );
+
+    localStorage.setItem(
+      "grade1MathStars",
+      String(stars)
+    );
+
+  }
+);
+
+</script>
 
 </body>
 </html>
